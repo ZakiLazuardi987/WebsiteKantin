@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -30,19 +31,36 @@ class UserService
         return $this->userRepository->create($data);
     }
 
-    public function updateUser(int $id, array $data): bool
+    public function updateUser(int $id, array $data, string $oldPassword = null): bool
     {
         $user = $this->userRepository->findById($id);
+
         if ($user) {
+            // Debug data password sebelum update
+            Log::info('Data sebelum update:', ['data' => $data, 'user' => $user]);
+
+            if ($oldPassword && !Hash::check($oldPassword, $user->password)) {
+                return false; // Password lama tidak cocok
+            }
+
             if (!empty($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
             } else {
                 $data['password'] = $user->password;
             }
-            return $this->userRepository->update($user, $data);
+
+            $updateResult = $this->userRepository->update($user, $data);
+
+            // Debug hasil update
+            Log::info('Hasil update:', ['updateResult' => $updateResult, 'data' => $data]);
+
+            return $updateResult;
         }
+
         return false;
     }
+
+
 
     public function deleteUser(int $id): bool
     {

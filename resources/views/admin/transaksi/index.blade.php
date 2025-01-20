@@ -28,7 +28,7 @@
                                         <form action="{{route('transaksi.destroy', $item->id)}}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger ml-1"><i
+                                            <button type="submit" class="btn btn-sm btn-danger ml-1" class="delete-form"><i
                                                     class="fa fa-trash mr-1"></i>Hapus</button>
                                         </form>
                                     </div>

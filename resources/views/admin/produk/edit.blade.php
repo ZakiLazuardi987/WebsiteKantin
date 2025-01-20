@@ -7,10 +7,10 @@
                     <hr>
 
                     @isset($kategori)
-                        <form action="/admin/produk/{{ $produk->id }}" method="POST" enctype="multipart/form-data">
+                        <form id="editForm" action="/admin/produk/{{ $produk->id }}" method="POST" enctype="multipart/form-data">
                             @method('PUT')
                         @else
-                            <form action="/admin/produk" method="POST" enctype="multipart/form-data">
+                            <form id="editForm" action="/admin/produk" method="POST" enctype="multipart/form-data">
                     @endisset
 
                         @csrf
@@ -75,9 +75,9 @@
                             @endisset
                         </div>
 
-                        <a href="/admin/produk" class="btn btn-secondary"><i
+                        <a href="/admin/produk" class="btn btn-secondary" ><i
                                 class="fas fa-arrow-left mr-2"></i>Kembali</a>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan</button>
+                        <button type="button" id="saveButton" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan</button>
                 </div>
             </div>
         </div>

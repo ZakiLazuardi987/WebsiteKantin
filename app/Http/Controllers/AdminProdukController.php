@@ -44,6 +44,7 @@ class AdminProdukController extends Controller
             'kategori_id' => 'required',
             'harga' => 'required',
             'stok' => 'required',
+            'keterangan' => 'required',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 

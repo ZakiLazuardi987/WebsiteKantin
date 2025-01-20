@@ -15,35 +15,93 @@
     <link rel="stylesheet" href="/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">
-    
+
 </head>
 
-<body class="hold-transition login-page">
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    /* Background Gradient Styling */
+    .background-gradient {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1e3c72, #2a5298, #ffffff);
+        background-size: 200% 200%;
+        animation: gradientAnimation 8s ease infinite;
+    }
+
+    .login-box {
+
+        margin-right: 80px;
+        position: relative;
+        width: 400px;
+        background: rgba(255, 255, 255, 0.8);
+        /* Efek transparan */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        /* Bayangan */
+        border-radius: 10px;
+        /* Membuat sudut melengkung */
+        backdrop-filter: blur(10px);
+        /* Blur latar belakang */
+    }
+
+    /* Keyframes for Gradient Animation */
+    @keyframes gradientAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* Form Input Styling */
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .btn-primary:hover {
+        background-color: #1e3c72;
+        border-color: #1e3c72;
+    }
+</style>
+
+<body class="login-page">
+
+    <div class="background-gradient"></div>
+
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="/assets/index2.html" class="h2"><b>Website Kantin</b></a>
+                <a href="/" class="h2"><b>Website Kantin</b></a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Silahkan Login!</p>
 
                 @if (session()->has('loginError'))
-                <div class="alert alert-danger">
-                    {{ session('loginError') }}
-                </div>
-
+                    <div class="alert alert-danger">
+                        {{ session('loginError') }}
+                    </div>
                 @endif
                 <form action="/login/do" method="post">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                             placeholder="Email">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
 
                         @error('email')
                             <div class="invalid-feedback">
@@ -52,12 +110,15 @@
                         @enderror
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control @error('password') is-invalid @enderror"
-                            name="password" placeholder="Password">
+                        <input type="password"
+                            class="form-control @error('password') is-invalid @enderror border-right-0" name="password"
+                            placeholder="Password" id="password-input">
                         <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
+                            <!-- Ikon mata untuk toggle show/hide password -->
+                            <span class="input-group-text bg-white border-left-0" id="toggle-password"
+                                style="cursor: pointer;">
+                                <i class="fas fa-eye"></i>
+                            </span>
                         </div>
 
                         @error('password')
@@ -76,12 +137,29 @@
     </div>
     <!-- /.login-box -->
 
+
     <!-- jQuery -->
     <script src="/assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/assets/dist/js/adminlte.min.js"></script>
+
+    <script>
+        // JavaScript untuk toggle show/hide password
+        const togglePassword = document.querySelector("#toggle-password");
+        const passwordInput = document.querySelector("#password-input");
+
+        togglePassword.addEventListener("click", function() {
+            // Toggle antara tipe password dan teks
+            const type = passwordInput.type === "password" ? "text" : "password";
+            passwordInput.type = type;
+
+            // Toggle ikon mata
+            this.querySelector("i").classList.toggle("fa-eye-slash");
+        });
+    </script>
+
 </body>
 
 </html>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\AuthService; // Perbaiki ini ke service
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminAuthController extends Controller
@@ -25,15 +26,25 @@ class AdminAuthController extends Controller
     {
         $data = $request->validate([
             'email' => 'required|email',
-            'password' => 'required' // Tambahkan minimal karakter
+            'password' => 'required' // Tambahkan minimal karakter jika diperlukan
         ]);
 
-        if ($this->authService->attemptLogin($data)) {
-            $request->session()->regenerate();
+        // Debug data login yang diterima
+        Log::info('Data login diterima:', ['data' => $data]);
+
+        // Proses login
+        $loginSuccess = $this->authService->attemptLogin($data);
+
+        // Debug hasil login
+        Log::info('Hasil login:', ['loginSuccess' => $loginSuccess]);
+
+        if ($loginSuccess) {
+            $request->session()->regenerate(); // Regenerate session untuk keamanan
             Alert::success('Sukses', 'Login Berhasil!');
             return redirect('/admin/dashboard');
         }
 
+        // Jika gagal login
         Alert::error('Gagal', 'Email atau password salah!');
         return back()->withInput(); // Tetap menyimpan input kecuali password
     }

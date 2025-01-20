@@ -7,10 +7,10 @@
                     <hr>
 
                     @isset($kategori)
-                        <form action="/admin/kategori/{{ $kategori->id }}" method="POST">
+                        <form id="editForm" action="/admin/kategori/{{ $kategori->id }}" method="POST">
                             @method('PUT')
                         @else
-                            <form action="/admin/kategori" method="POST">
+                            <form id="editForm" action="/admin/kategori" method="POST">
                     @endisset
 
                         @csrf
@@ -28,7 +28,7 @@
 
                         <a href="/admin/kategori" class="btn btn-secondary"><i
                                 class="fas fa-arrow-left mr-2"></i>Kembali</a>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan</button>
+                        <button type="button" id="saveButton" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan</button>
                 </div>
             </div>
         </div>

@@ -11,28 +11,30 @@
                     <table class="table mt-2">
                         <tr>
                             <th>No</th>
+                            <th>Gambar</th>
                             <th>Nama Produk</th>
                             <th>Kategori</th>
                             <th>Harga</th>
                             <th>Stok</th>
-                            <th>Gambar</th>
+                            <th>Keterangan</th>
                             <th>Action</th>
                         </tr>
 
                         @foreach ($produk as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td><img src="/{{ $item->gambar }}" width="80px" height="80px" alt=""></td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->kategori->name }}</td>
                                 <td>{{ $item->harga }}</td>
                                 <td>{{ $item->stok }}</td>
-                                <td><img src="/{{ $item->gambar }}" width="80px" height="80px" alt=""></td>
+                                <td>{{ $item->keterangan}}  </td>
                                 <td>
                                     <div class="d-flex">
                                         <a href="/admin/produk/{{ $item->id }}/edit" class="btn btn-sm btn-info"><i
                                                 class="fa fa-edit mr-1"></i>Edit</a>
                                         {{-- <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>Hapus</a> --}}
-                                        <form action="/admin/produk/{{ $item->id }}" method="POST">
+                                        <form action="/admin/produk/{{ $item->id }}" method="POST" class="delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger ml-1"><i

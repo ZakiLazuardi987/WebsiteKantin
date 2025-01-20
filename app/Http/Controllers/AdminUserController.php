@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminUserController extends Controller
@@ -63,16 +65,40 @@ class AdminUserController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
+            'old_password' => 'nullable',
+            'password' => 'nullable|min:6',
             're_password' => 'same:password',
         ]);
 
-        if ($this->userService->updateUser((int) $id, $data)) {
+        Log::info('Data validasi:', ['data' => $data]);
+
+        $user = $this->userService->getUserById((int) $id);
+
+        // if ($request->filled('old_password')) {
+        //     if (!Hash::check($request->old_password, $user->password)) {
+        //         Log::info('Password lama salah:', ['old_password' => $request->old_password, 'stored_password' => $user->password]);
+        //         return back()->withErrors(['old_password' => 'Password lama tidak sesuai!'])->withInput();
+        //     }
+
+        //     $data['password'] = $request->password;
+        // }
+
+        unset($data['old_password'], $data['re_password']);
+
+        $updateResult = $this->userService->updateUser((int) $id, $data, $request->old_password);
+
+        Log::info('Hasil update user:', ['updateResult' => $updateResult]);
+
+        if ($updateResult) {
             Alert::success('Sukses', 'Data telah berhasil diubah!');
         } else {
-            Alert::error('Gagal', 'Data tidak ditemukan!');
+            Alert::error('Gagal', 'Password lama tidak sesuai atau data tidak ditemukan!');
         }
+
         return redirect('/admin/user');
     }
+
+
 
     public function destroy(string $id)
     {

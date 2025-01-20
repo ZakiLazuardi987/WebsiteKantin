@@ -23,6 +23,13 @@ class DashboardController extends Controller
         // Mengambil total pendapatan
         $jumlahPendapatan = Transaksi::sum('total'); 
 
+        // Mengambil pendapatan per hari
+        $pendapatanPerHari = Transaksi::selectRaw('DATE(created_at) as tanggal, SUM(total) as pendapatan')
+            ->groupBy('tanggal')
+            ->orderBy('tanggal', 'asc')
+            ->pluck('pendapatan', 'tanggal')
+            ->toArray();
+
         // Mengirim data ke view dashboard
         $data = [
             'title' => 'Kelola Transaksi',
@@ -30,8 +37,11 @@ class DashboardController extends Controller
             'jumlahUser' => $jumlahUser,
             'jumlahTransaksi' => $jumlahTransaksi,
             'jumlahPendapatan' => $jumlahPendapatan,
-            'content' => 'admin/dashboard/index'
+            'pendapatanPerHari' => $pendapatanPerHari, // Data pendapatan per hari
+            'content' => 'admin/dashboard/index',
         ];
+        
         return view('admin.layouts.wrapper', $data);
     }
 }
+

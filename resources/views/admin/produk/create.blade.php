@@ -54,6 +54,16 @@
                                 </div>
                             @enderror
 
+                            <label for="stok">Keterangan</label>
+                                <input type="text" class="form-control @error('keterangan') is-invalid @enderror"
+                                name="keterangan" placeholder="Keterangan" value="{{ old('keterangan') }}">
+
+                            @error('keterangan')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
                             <label for="gambar">Gambar</label>
                             <input type="file" class="form-control @error('gambar') is-invalid @enderror"
                                 name="gambar" placeholder="Pilih Gambar" value="{{ old('gambar') }}">

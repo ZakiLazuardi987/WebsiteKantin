@@ -87,8 +87,8 @@
                             <div class="col-md-8">
                                 <a href="/admin/transaksi" class="btn btn-secondary"><i
                                         class="fas fa-arrow-left mr-2"></i>Kembali</a>
-                                <button type="submit" class="btn btn-primary">Tambah<i
-                                        class="fas fa-arrow-right ml-2"></i></button>
+                                {{-- <button type="submit" class="btn btn-primary">Tambah<i
+                                        class="fas fa-arrow-right ml-2"></i></button> --}}
                             </div>
                         </div>
 
@@ -143,7 +143,7 @@
                         
                         <div class="form-group">
                             <label for="">Jumlah Bayar</label>
-                            <input type="number" value="{{ request('jumlah_bayar') }}" name="jumlah_bayar" class="form-control" id="">
+                            <input type="number" value="{{ request('jumlah_bayar') }}" name="jumlah_bayar" class="form-control" id="" required>
                         </div>
                         
                         <button type="submit" class="btn btn-primary btn-block mr-2">Hitung</button>

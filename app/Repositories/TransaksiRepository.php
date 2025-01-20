@@ -10,8 +10,9 @@ class TransaksiRepository
 {
     public function getAll(int $perPage)
     {
-        return Transaksi::paginate($perPage);
+        return Transaksi::orderBy('created_at', 'desc')->paginate($perPage); // Menambahkan orderBy sebelum paginate
     }
+
 
     public function create(array $data)
     {
@@ -39,13 +40,13 @@ class TransaksiRepository
         $produk = Produk::findOrFail($produkId);
         $produk_name = $produk->name;
 
-        $qty = $action === 'minus' ? max(1, $qty - 1) : $qty + 1;
+        $qty = $action === 'minus' ? max(0, $qty - 1) : $qty + 1;
 
         $subtotal = $produk->harga * $qty;
         $transaksi->details()->updateOrCreate(
             ['produk_id' => $produkId],
             ['produk_name' => $produk_name, 'qty' => $qty, 'subtotal' => $subtotal]
-    
+
         );
 
         $transaksi->total = $transaksi->details->sum('subtotal');

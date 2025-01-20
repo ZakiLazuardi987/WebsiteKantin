@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\DetailTransaksiService;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 
 class AdminDetailTransaksiController extends Controller
@@ -47,6 +48,7 @@ class AdminDetailTransaksiController extends Controller
     public function done($id)
     {
         $this->detailTransaksiService->finalizeTransaksi($id);
+        Alert::success('Sukses', 'Transaksi berhasil ditambahkan!');
         return redirect('/admin/transaksi');
     }
 }

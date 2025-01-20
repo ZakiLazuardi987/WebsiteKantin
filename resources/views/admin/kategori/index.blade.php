@@ -24,7 +24,7 @@
                                         <a href="/admin/kategori/{{ $item->id }}/edit" class="btn btn-sm btn-info"><i
                                                 class="fa fa-edit mr-1"></i>Edit</a>
                                         {{-- <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>Hapus</a> --}}
-                                        <form action="/admin/kategori/{{ $item->id }}" method="POST">
+                                        <form action="/admin/kategori/{{ $item->id }}" method="POST" class="delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger ml-1"><i
