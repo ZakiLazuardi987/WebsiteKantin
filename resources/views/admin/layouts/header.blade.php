@@ -13,13 +13,8 @@
 
        {{-- <button id="toggleDarkMode" class="btn btn-dark"><i class="fas fa-moon"></i></button> --}}
          <li class="nav-item">
-             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                 <i class="fas fa-expand-arrows-alt"></i>
-             </a>
-         </li>
-         <li class="nav-item">
-             <a href="/logout" class="nav-link">
-                 <i class="fas fa-sign-out-alt"></i>
+             <a href="/logout" class="nav-link bg-danger mr-2" style="border-radius: 10px;">
+                 <i class="fas fa-sign-out-alt"> Logout</i>
              </a>
          </li>
      </ul>
