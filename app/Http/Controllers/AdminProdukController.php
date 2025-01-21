@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Services\ProdukService;
 use App\Models\Kategori;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminProdukController extends Controller
 {
     protected ProdukService $produkService;
+    protected FileUploadService $fileUploadService;
 
-    public function __construct(ProdukService $produkService)
+    public function __construct(ProdukService $produkService, FileUploadService $fileUploadService)
     {
         $this->produkService = $produkService;
+        $this->fileUploadService = $fileUploadService;
     }
 
     public function index()
@@ -49,15 +52,30 @@ class AdminProdukController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar');
-            $file_name = time() . '.' . $gambar->getClientOriginalName();
-            $storage = 'uploads/images/';
-            $gambar->move($storage, $file_name);
-            $data['gambar'] = $storage . $file_name;
+            $data['gambar'] = $this->fileUploadService->uploadFile($request->file('gambar'), 'uploads/images/');
         }
 
         $this->produkService->createProduct($data);
         Alert::success('Sukses', 'Produk telah ditambahkan!');
+        return redirect('/admin/produk');
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $data = $request->validate([
+            'name' => 'required',
+            'kategori_id' => 'required',
+            'harga' => 'required',
+            'stok' => 'required',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $data['gambar'] = $this->fileUploadService->uploadFile($request->file('gambar'), 'uploads/images/');
+        }
+
+        $this->produkService->updateProduct($id, $data);
+        Alert::success('Sukses', 'Produk telah berhasil diubah!');
         return redirect('/admin/produk');
     }
 
@@ -72,28 +90,28 @@ class AdminProdukController extends Controller
         return view('admin.layouts.wrapper', $data);
     }
 
-    public function update(Request $request, string $id)
-    {
-        $data = $request->validate([
-            'name' => 'required',
-            'kategori_id' => 'required',
-            'harga' => 'required',
-            'stok' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
+    // public function update(Request $request, string $id)
+    // {
+    //     $data = $request->validate([
+    //         'name' => 'required',
+    //         'kategori_id' => 'required',
+    //         'harga' => 'required',
+    //         'stok' => 'required',
+    //         'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    //     ]);
 
-        if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar');
-            $file_name = time() . '.' . $gambar->getClientOriginalName();
-            $storage = 'uploads/images/';
-            $gambar->move($storage, $file_name);
-            $data['gambar'] = $storage . $file_name;
-        }
+    //     if ($request->hasFile('gambar')) {
+    //         $gambar = $request->file('gambar');
+    //         $file_name = time() . '.' . $gambar->getClientOriginalName();
+    //         $storage = 'uploads/images/';
+    //         $gambar->move($storage, $file_name);
+    //         $data['gambar'] = $storage . $file_name;
+    //     }
 
-        $this->produkService->updateProduct($id, $data);
-        Alert::success('Sukses', 'Produk telah berhasil diubah!');
-        return redirect('/admin/produk');
-    }
+    //     $this->produkService->updateProduct($id, $data);
+    //     Alert::success('Sukses', 'Produk telah berhasil diubah!');
+    //     return redirect('/admin/produk');
+    // }
 
     public function destroy(string $id)
     {

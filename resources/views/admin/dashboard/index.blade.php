@@ -2,6 +2,7 @@
     .welcome-banner {
         background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
         transition: transform 0.3s ease;
+        border-radius: 10px; /* Menambahkan border-radius */
     }
 
     .welcome-banner:hover {
@@ -11,6 +12,8 @@
     .dashboard-card {
         transition: all 0.3s ease;
         border: none;
+        border-radius: 10px; /* Menambahkan border-radius */
+        overflow: hidden; /* Agar isi tidak melampaui radius */
     }
 
     .dashboard-card:hover {
@@ -41,6 +44,7 @@
         position: absolute;
         top: 15px;
         right: 15px;
+        border-radius: 10px; /* Menambahkan radius pada badge */
     }
 
     .category-badge.badge.bg-warning.text-white {
@@ -55,26 +59,14 @@
         padding: 20px;
     }
 
-    /* Styling untuk Chart Container */
     .chart-container {
-        /* width: 100%;
-        max-width: 100%; */
         height: 400px;
         margin-top: 40px;
+        border-radius: 10px; /* Menambahkan border-radius pada container chart */
+        overflow: hidden; /* Agar isi tetap dalam radius */
     }
-
-    /* Membuat chart responsif */
-    /* .chart {
-        width: 100% !important;
-        height: 100% !important;
-    } */
-
-    /* .container-fluid {
-        max-width: 100%;
-        padding-left: 0;
-        padding-right: 0;
-    } */
 </style>
+
 
 <body>
     <div class="container-fluid pt-3">
@@ -161,7 +153,7 @@
         // Mempercepat Animasi Counting dan Menambahkan Format "Rp"
         function countUp(elementId, endValue, isCurrency = false) {
             let startValue = 0;
-            let increment = endValue / 70; // Menambah lebih cepat
+            let increment = endValue / 100; // Menambah lebih cepat
             let interval = setInterval(() => {
                 startValue += increment;
                 if (startValue >= endValue) {

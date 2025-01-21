@@ -30,8 +30,14 @@
                         </div>
                         <div class="form-group">
                             <label for=""><b>Password</b></label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password">
-
+                            <div class="input-group">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror border-right-0" name="password" placeholder="Password" id="password">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white border-left-0" id="toggle-password" style="cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
                             @error('password')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -40,14 +46,21 @@
                         </div>
                         <div class="form-group">
                             <label for=""><b>Konfirmasi Password</b></label>
-                            <input type="password" class="form-control @error('re_password') is-invalid @enderror" name="re_password" placeholder="Password">
-
+                            <div class="input-group">
+                                <input type="password" class="form-control @error('re_password') is-invalid @enderror border-right-0" name="re_password" placeholder="Password" id="re_password">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white border-left-0" id="toggle-re-password" style="cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
                             @error('re_password')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
+                        
 
                         <a href=" /admin/user" class="btn btn-secondary"><i
                                 class="fas fa-arrow-left mr-2"></i>Kembali</a>

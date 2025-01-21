@@ -83,8 +83,25 @@
   });
 </script>
 
+<script>
+    function togglePasswordVisibility(toggleId, inputId) {
+        const toggleElement = document.getElementById(toggleId);
+        const inputElement = document.getElementById(inputId);
 
+        toggleElement.addEventListener('click', function () {
+            const type = inputElement.type === 'password' ? 'text' : 'password';
+            inputElement.type = type;
 
+            // Toggle ikon
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    }
+
+    // Apply fungsi untuk semua input password
+    togglePasswordVisibility('toggle-password', 'password');
+    togglePasswordVisibility('toggle-re-password', 're_password');
+    togglePasswordVisibility('toggle-old-password', 'old_password');
+</script>
 
 </body>
 </html>

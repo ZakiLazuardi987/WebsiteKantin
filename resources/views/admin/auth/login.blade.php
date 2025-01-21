@@ -26,6 +26,7 @@
         height: 100vh;
         margin: 0;
         overflow: hidden;
+        font-family: 'Source Sans Pro', sans-serif;
     }
 
     /* Background Gradient Styling */
@@ -33,24 +34,9 @@
         position: fixed;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #1e3c72, #2a5298, #ffffff);
-        background-size: 200% 200%;
-        animation: gradientAnimation 8s ease infinite;
-    }
-
-    .login-box {
-
-        margin-right: 80px;
-        position: relative;
-        width: 400px;
-        background: rgba(255, 255, 255, 0.8);
-        /* Efek transparan */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        /* Bayangan */
-        border-radius: 10px;
-        /* Membuat sudut melengkung */
-        backdrop-filter: blur(10px);
-        /* Blur latar belakang */
+        background: linear-gradient(135deg, #1e3c72, #2a5298, #6a89cc, #acc7d5, #ffffff);
+        background-size: 300% 300%;
+        animation: gradientAnimation 12s linear infinite;
     }
 
     /* Keyframes for Gradient Animation */
@@ -59,13 +45,31 @@
             background-position: 0% 50%;
         }
 
+        25% {
+            background-position: 50% 100%;
+        }
+
         50% {
             background-position: 100% 50%;
+        }
+
+        75% {
+            background-position: 50% 0%;
         }
 
         100% {
             background-position: 0% 50%;
         }
+    }
+
+    .login-box {
+        margin-right: 80px;
+        position: relative;
+        width: 400px;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
     }
 
     /* Form Input Styling */
@@ -78,6 +82,7 @@
         border-color: #1e3c72;
     }
 </style>
+
 
 <body class="login-page">
 

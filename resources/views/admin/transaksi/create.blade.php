@@ -29,10 +29,12 @@
                         @csrf
 
                         <input type="hidden" name='transaksi_id' value="{{ Request::segment(3) }}">
-                        <input type="hidden" name='produk_id' value="{{ isset($detail_produk) ? $detail_produk->id : '' }}">
-                        <input type="hidden" name='produk_name' value="{{ isset($detail_produk) ? $detail_produk->name : '' }}"> 
+                        <input type="hidden" name='produk_id'
+                            value="{{ isset($detail_produk) ? $detail_produk->id : '' }}">
+                        <input type="hidden" name='produk_name'
+                            value="{{ isset($detail_produk) ? $detail_produk->name : '' }}">
                         <input type="hidden" name='subtotal' value="{{ $subtotal }}">
-                        
+
                         <div class="row mt-2">
                             <div class="col-md-4">
                                 <label for="">Nama Produk</label>
@@ -119,10 +121,13 @@
                                     <a href="/admin/transaksi/detail/delete?id={{ $item->id }}"><i class="fas fa-times"></i></a>
                                 </td> --}}
                             </tr>
-                        @endforeach  
+                        @endforeach
                     </table>
 
-                    <a href="/admin/transaksi/detail/done/{{ Request::segment(3) }}" class="btn btn-success"><i class="fas fa-check mr-2"></i>Selesai</a>
+                    <a href="/admin/transaksi/detail/done/{{ Request::segment(3) }}" class="btn btn-success"
+                        onclick="return confirm('Apakah Anda yakin ingin menyelesaikan transaksi ini?')">
+                        <i class="fas fa-check mr-2"></i>Selesai
+                    </a>
                     {{-- <a href="" class="btn btn-info"><i class="fas fa-file mr-2"></i>Pending</a> --}}
                 </div>
             </div>
@@ -138,22 +143,25 @@
                     <form action="" method="GET">
                         <div class="form-group">
                             <label for="">Total Belanja</label>
-                            <input type="number" value="{{ $transaksi->total }}" name="total_belanja" class="form-control" id="">
+                            <input type="number" value="{{ $transaksi->total }}" name="total_belanja"
+                                class="form-control" id="">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="">Jumlah Bayar</label>
-                            <input type="number" value="{{ request('jumlah_bayar') }}" name="jumlah_bayar" class="form-control" id="" required>
+                            <input type="number" value="{{ request('jumlah_bayar') }}" name="jumlah_bayar"
+                                class="form-control" id="">
                         </div>
-                        
+
                         <button type="submit" class="btn btn-primary btn-block mr-2">Hitung</button>
                     </form>
-                        <hr>
-                        <div class="form-group">
-                            <label for="">Uang Kembalian</label>
-                            <input type="number" value="{{ format_rupiah($kembalian) }}" disabled name="kembalian" class="form-control" id="">
-                        </div>
-                    
+                    <hr>
+                    <div class="form-group">
+                        <label for="">Uang Kembalian</label>
+                        <input type="number" value="{{ format_rupiah($kembalian) }}" disabled name="kembalian"
+                            class="form-control" id="">
+                    </div>
+
                 </div>
             </div>
         </div>

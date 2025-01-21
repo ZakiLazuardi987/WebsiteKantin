@@ -38,19 +38,37 @@
                             </div>
                             <div class="form-group">
                                 <label for=""><b>Password Lama</b></label>
-                                <input type="password" class="form-control @error('old_password') is-invalid @enderror"
-                                    name="old_password" placeholder="Password Lama">
-
+                                <div class="input-group">
+                                    <input type="password"
+                                        class="form-control @error('old_password') is-invalid @enderror border-right-0"
+                                        name="old_password" placeholder="Password Lama" id="old_password">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-left-0" id="toggle-old-password"
+                                            style="cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
                                 @error('old_password')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label for=""><b>Password Baru</b></label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                    name="password" placeholder="Password Baru">
+                                <div class="input-group">
+
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror border-right-0"
+                                        name="password" placeholder="Password Baru" id="password">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-left-0" id="toggle-password"
+                                            style="cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
 
                                 @error('password')
                                     <div class="invalid-feedback">
@@ -60,8 +78,18 @@
                             </div>
                             <div class="form-group">
                                 <label for=""><b>Konfirmasi Password</b></label>
-                                <input type="password" class="form-control @error('re_password') is-invalid @enderror"
-                                    name="re_password" placeholder="Password">
+                                <div class="input-group">
+
+                                    <input type="password"
+                                        class="form-control @error('re_password') is-invalid @enderror border-right-0"
+                                        name="re_password" placeholder="Password" id="re_password">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-left-0" id="toggle-re-password"
+                                            style="cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
 
                                 @error('re_password')
                                     <div class="invalid-feedback">

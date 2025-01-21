@@ -16,6 +16,8 @@ use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
 use App\Services\AuthService;
 use App\Services\DetailTransaksiService;
+use App\Services\FileUploadService;
+use App\Services\FileUploadServiceInterface;
 use App\Services\KategoriService;
 use App\Services\ProdukService;
 use App\Services\TransaksiService;
@@ -68,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
+        $this->app->bind(FileUploadServiceInterface::class, FileUploadService::class);
     }
 
     public function boot(): void
