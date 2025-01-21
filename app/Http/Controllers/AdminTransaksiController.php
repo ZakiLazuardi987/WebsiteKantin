@@ -41,13 +41,13 @@ class AdminTransaksiController extends Controller
     {
         $produkId = $request->input('produk_id');
         $action = $request->input('action', 'plus');
-        $qty = max(0, $request->input('qty', 1));
+        $qty = max(0, $request->input('qty', 0));
         $jumlahBayar = $request->input('jumlah_bayar', 0);
 
-        // Validasi produk ID
-        if ($produkId && !$this->transaksiService->isValidProductId($produkId)) {
-            return redirect()->back()->with('error', 'Produk tidak valid!');
-        }
+        // // Validasi produk ID
+        // if ($produkId && !$this->transaksiService->isValidProductId($produkId)) {
+        //     return redirect()->back()->with('error', 'Produk tidak valid!');
+        // }
 
         // Tambahkan produk ke transaksi jika ada produk_id
         $result = $produkId
@@ -58,7 +58,7 @@ class AdminTransaksiController extends Controller
             'title' => 'Tambah Transaksi',
             'produk' => $this->transaksiService->getAllProducts(),
             'detail_produk' => $result['produk'] ?? null,
-            'qty' => $result['qty'] ?? 1,
+            'qty' => $result['qty'] ?? 0,
             'subtotal' => $result['subtotal'] ?? 0,
             'transaksi' => $this->transaksiService->getTransactionById($id),
             'detail_transaksi' => $this->transaksiService->getTransactionDetail($id),  // Mengirimkan detail transaksi

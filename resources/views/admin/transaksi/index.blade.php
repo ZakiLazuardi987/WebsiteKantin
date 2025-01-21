@@ -25,10 +25,10 @@
                                     <div class="d-flex">
                                         <a href="/admin/transaksi/{{$item->id}}/edit" class="btn btn-sm btn-info"><i
                                                 class="fa fa-edit mr-1"></i>Edit</a>
-                                        <form action="{{route('transaksi.destroy', $item->id)}}" method="POST">
+                                        <form action="{{route('transaksi.destroy', $item->id)}}" method="POST" class="delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger ml-1" class="delete-form"><i
+                                            <button type="submit" class="btn btn-sm btn-danger ml-1"><i
                                                     class="fa fa-trash mr-1"></i>Hapus</button>
                                         </form>
                                     </div>

@@ -37,12 +37,12 @@
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
-                            @error('password')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
                         </div>
                         <div class="form-group">
                             <label for=""><b>Konfirmasi Password</b></label>
@@ -53,12 +53,12 @@
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
+                                @error('re_password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
-                            @error('re_password')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
                         </div>
                         
 

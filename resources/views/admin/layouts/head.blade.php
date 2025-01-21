@@ -21,8 +21,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="/assets/plugins/sweetalert2/sweetalert2.min.css">
 
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
 
 </head>
+<style>
+    <style>.dark-mode {
+        background-color: #343a40;
+        color: #ffffff;
+    }
+</style>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">

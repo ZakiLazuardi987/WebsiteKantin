@@ -64,7 +64,7 @@
                                     <a href="?produk_id={{ request('produk_id') }} & action=minus & qty={{ $qty }}"
                                         class="btn btn-primary"><i class="fas fa-minus"></i></a>
                                     <input type="number" value="{{ $qty }}" class="form-control ml-1 mr-1"
-                                        name="qty" placeholder="QTY">
+                                        name="qty" placeholder="QTY" disabled>
                                     <a href="?produk_id={{ request('produk_id') }} & action=plus & qty={{ $qty }}"
                                         class="btn btn-primary"><i class="fas fa-plus"></i></a>
                                 </div>

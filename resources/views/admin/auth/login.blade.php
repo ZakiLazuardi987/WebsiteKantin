@@ -16,6 +16,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">
 
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+
+
 </head>
 
 <style>
@@ -85,7 +88,6 @@
 
 
 <body class="login-page">
-
     <div class="background-gradient"></div>
 
     <div class="login-box">
@@ -164,7 +166,6 @@
             this.querySelector("i").classList.toggle("fa-eye-slash");
         });
     </script>
-
 </body>
 
 </html>

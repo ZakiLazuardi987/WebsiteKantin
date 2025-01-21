@@ -46,7 +46,7 @@ class AdminAuthController extends Controller
 
         // Jika gagal login
         Alert::error('Gagal', 'Email atau password salah!');
-        return back()->withInput(); // Tetap menyimpan input kecuali password
+        return back()->withInput()->withErrors(['email' => 'Email atau password salah!']); // Tetap menyimpan input kecuali password
     }
 
     public function logout()

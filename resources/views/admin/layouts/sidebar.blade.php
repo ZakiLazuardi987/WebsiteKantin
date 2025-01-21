@@ -1,4 +1,4 @@
-<aside class="main-sidebar elevation-4" style="font-family: 'Poppins'; background-color: white;">
+<aside class="main-sidebar elevation-4" style="font-family: 'Poppins'; background-color: white; position: fixed;">
     <!-- Brand Logo -->
     <a href="/admin/dashboard" 
         class="brand-link d-flex justify-content-center align-items-center py-3"
