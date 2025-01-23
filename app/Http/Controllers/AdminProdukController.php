@@ -48,7 +48,7 @@ class AdminProdukController extends Controller
             'harga' => 'required',
             'stok' => 'required',
             'keterangan' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'gambar' => 'nullable|image |mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         if ($request->hasFile('gambar')) {

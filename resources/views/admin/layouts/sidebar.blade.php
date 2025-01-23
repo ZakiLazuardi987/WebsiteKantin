@@ -17,7 +17,7 @@
                 data-accordion="false">
                 <li class="nav-item">
                     <a href="/admin/dashboard" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-th"></i>
+                        <img src="assets/img/logo-bw.jpg" alt="">
                         <p>
                             Dashboard
                         </p>
