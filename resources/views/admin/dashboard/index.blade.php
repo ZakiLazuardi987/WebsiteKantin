@@ -1,7 +1,6 @@
 <style>
     .welcome-banner {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        transition: transform 0.3s ease;
+        background: #3b82f6;
         border-radius: 10px; /* Menambahkan border-radius */
     }
 
@@ -189,8 +188,8 @@
                     datasets: [{
                         label: 'Pendapatan Harian',
                         data: dataPendapatan,
-                        borderColor: '#28a745',
-                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(219 234, 254, 0.4)',
                         fill: true,
                         tension: 0.4
                     }]

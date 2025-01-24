@@ -6,8 +6,18 @@
                     <h5><b>{{ $title }}</b></h5>
                     <hr>
 
-                    <a href="/admin/produk/create" class="btn btn-primary mt-2 mb-2"><i
-                            class="fas fa-plus mr-2"></i>Tambah</a>
+                    <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+                        <a href="/admin/produk/create" class="btn btn-primary"><i class="fas fa-plus mr-2"></i>Tambah</a>
+                        <form action="/admin/produk" method="GET" class="form-inline">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" placeholder="Cari Produk" value="{{ $search }}">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i> Cari</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
                     <table class="table mt-2">
                         <tr>
                             <th>No</th>
@@ -23,7 +33,7 @@
                         @foreach ($produk as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td><img src="/{{ $item->gambar }}" width="80px" height="80px" alt=""></td>
+                                <td><img src="/{{ $item->gambar }}" width="70px" height="70px" alt=""></td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->kategori->name }}</td>
                                 <td>{{ $item->harga }}</td>
@@ -47,7 +57,7 @@
                     </table>
 
                     <div class="d-flex justify-content-right">
-                        {{ $produk->links() }}
+                        {{ $produk->appends(['search' => $search, 'perPage' => $perPage])->links() }}
                         
                     </div>
                 </div>

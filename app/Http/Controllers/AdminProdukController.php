@@ -19,16 +19,27 @@ class AdminProdukController extends Controller
         $this->fileUploadService = $fileUploadService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        // $produks = $this->produkService->getAllProducts(5);
+
+        $perPage = $request->get('perPage', 5);
+        $search = $request->get('search');
+
+        $produks = $this->produkService->getPaginatedProducts($perPage, $search);
+
         $data = [
             'title' => 'Kelola Produk',
-            'produk' => $this->produkService->getAllProducts(5),
+            'produk' => $produks,
             'kategori' => Kategori::get(),
-            'content' => 'admin/produk/index'
+            'search' => $search,
+            'perPage' => $perPage,
+            'content' => 'admin.produk.index',
         ];
+
         return view('admin.layouts.wrapper', $data);
     }
+
 
     public function create()
     {
@@ -47,7 +58,7 @@ class AdminProdukController extends Controller
             'kategori_id' => 'required',
             'harga' => 'required',
             'stok' => 'required',
-            'keterangan' => 'required',
+            'keterangan' => 'nullable',
             'gambar' => 'nullable|image |mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -67,6 +78,7 @@ class AdminProdukController extends Controller
             'kategori_id' => 'required',
             'harga' => 'required',
             'stok' => 'required',
+            'keterangan' => 'nullable',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 

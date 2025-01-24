@@ -1,23 +1,23 @@
-<aside class="main-sidebar elevation-4" style="font-family: 'Poppins'; background-color: white; position: fixed;">
+<aside class="main-sidebar elevation-4" style=" background-color: white; position: fixed;">
     <!-- Brand Logo -->
     <a href="/admin/dashboard" 
         class="brand-link d-flex justify-content-center align-items-center py-3"
         style="color: #333; background-color: white; transition: background-color 0.2s, color 0.2s;"
-        onmouseover="this.style.color='#007bff'; this.style.backgroundColor='#f4f4f4';"
+        onmouseover="this.style.color='#007bff';"
         onmouseout="this.style.color='#333'; this.style.backgroundColor='white';">
-        <i class="fas fa-pizza-slice mr-2"></i>
+        <img src="{{ asset('assets/img/logo-color.png') }}" class="mr-2" style="width: 30px; height: 30px;"/>
         <span class="brand-text font-weight-medium">Website Kantin</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar Menu -->
-        <nav class="mt-2">
+        <nav class="mt-3">
             <ul class="nav nav-pills nav-sidebar flex-column"  data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item">
                     <a href="/admin/dashboard" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">
-                        <img src="assets/img/logo-bw.jpg" alt="">
+                        <i class="nav-icon fas fa-store"></i>
                         <p>
                             Dashboard
                         </p>

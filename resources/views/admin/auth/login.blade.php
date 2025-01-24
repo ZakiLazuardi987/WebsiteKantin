@@ -16,7 +16,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">
 
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo-color.png">
 
 
 </head>

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Produk;
 use App\Repositories\ProdukRepositoryInterface;
 
 class ProdukService
@@ -16,6 +17,11 @@ class ProdukService
     public function getAllProducts(int $pagination): mixed
     {
         return $this->produkRepository->getAll($pagination);
+    }
+
+    public function getPaginatedProducts($perPage, $search = null)
+    {
+        return $this->produkRepository->getPaginatedProducts($perPage, $search);
     }
 
     public function getProductById(string $id): mixed

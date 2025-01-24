@@ -1,5 +1,3 @@
- <!-- Navbar -->
- </style>
  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
      <!-- Left navbar links -->
      <ul class="navbar-nav">
@@ -10,18 +8,17 @@
 
      <!-- Right navbar links -->
      <ul class="navbar-nav ml-auto">
-
        {{-- <button id="toggleDarkMode" class="btn btn-dark"><i class="fas fa-moon"></i></button> --}}
          <li class="nav-item">
-             <a href="/logout" class="nav-link bg-danger mr-2" style="border-radius: 10px;">
-                 <i class="fas fa-sign-out-alt"> Logout</i>
-             </a>
+            <a href="#" id="logoutButton" class="nav-link bg-danger mr-2" style="border-radius: 10px;">
+                <i class="fas fa-sign-out-alt"> Logout</i>
+            </a>
          </li>
      </ul>
  </nav>
- <script>
+ {{-- <script>
      document.getElementById('toggleDarkMode').addEventListener('click', function() {
          document.body.classList.toggle('dark-mode');
      });
- </script>
+ </script> --}}
  <!-- /.navbar -->

@@ -17,15 +17,27 @@ class AdminUserController extends Controller
         $this->userService = $userService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+        $users = $this->userService->getAllUsers();
+
+        if ($search) {
+            $users = $users->filter(function ($user) use ($search) {
+                return str_contains(strtolower($user->name), strtolower($search)) ||
+                    str_contains(strtolower($user->email), strtolower($search));
+            });
+        }
+
         $data = [
             'title' => 'Kelola Data User',
-            'user' => $this->userService->getAllUsers(),
+            'user' => $users,
             'content' => 'admin.user.index',
         ];
+
         return view('admin.layouts.wrapper', $data);
     }
+
 
     public function create()
     {

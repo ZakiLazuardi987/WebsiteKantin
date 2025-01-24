@@ -11,6 +11,21 @@ class ProdukRepository implements ProdukRepositoryInterface
         return Produk::paginate($pagination);
     }
 
+    public function getPaginatedProducts($perPage, $search = null): mixed {
+        $query = Produk::query();
+
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('harga', 'like', '%' . $search . '%')
+                  ->orWhere('stok', 'like', '%' . $search . '%')
+                  ->orWhere('keterangan', 'like', '%' . $search . '%');
+        }
+        
+
+        return $query->paginate($perPage);
+    }
+
+
     public function findById(string $id): mixed
     {
         return Produk::findOrFail($id);

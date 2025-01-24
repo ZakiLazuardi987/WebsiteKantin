@@ -81,6 +81,43 @@
 </script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoutButton = document.getElementById('logoutButton');
+
+        logoutButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah navigasi langsung
+
+            Swal.fire({
+                title: 'Konfirmasi Logout',
+                text: "Apakah Anda yakin ingin logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Logout!',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Logout Berhasil',
+                        text: 'Anda telah berhasil logout.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = '/logout'; // Redirect jika dikonfirmasi
+                    });
+                }
+            });
+        });
+    });
+</script>
+            });
+        });
+    });
+</script>
+
+
+<script>
     function togglePasswordVisibility(toggleId, inputId) {
         const toggleElement = document.getElementById(toggleId);
         const inputElement = document.getElementById(inputId);
