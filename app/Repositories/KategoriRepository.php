@@ -6,9 +6,16 @@ use App\Models\Kategori;
 
 class KategoriRepository implements KategoriRepositoryInterface
 {
-    public function getAll(int $pagination): mixed
+    public function getAll(int $pagination, ?string $search = null): mixed
     {
-        return Kategori::paginate($pagination);
+        $query = Kategori::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%$search%");
+        }
+    
+        return $query->paginate($pagination);
+        // return Kategori::paginate($pagination);
     }
 
     public function findById(string $id): mixed

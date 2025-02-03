@@ -6,9 +6,17 @@ use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getAll(): iterable
+    public function getAll(?string $search = null): iterable
     {
-        return User::all();
+        $query = User::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%");
+        }
+
+        return $query->get();
+        // return User::all();
     }
 
     public function findById(int $id): ?User

@@ -70,10 +70,10 @@
 <body>
     <div class="container-fluid pt-3">
         <!-- Welcome Message -->
-        <div class="welcome-banner card mb-3 shadow" style="font-family: 'Poppins'">
+        <div class="welcome-banner card mb-3 shadow" style="background-color: white">
             <div class="card-body d-flex align-items-center py-4">
                 <i class="fas fa-hand- text-white display-4 me-3"></i>
-                <h4 class="text-white m-0">Halo {{ Auth::user()->name }}, Selamat Datang di Website Kantin!</h4>
+                <h3 class="m-0 text-primary">Halo {{ Auth::user()->name }}, Selamat Datang di Website Kantin!</h3>
             </div>
         </div>
 

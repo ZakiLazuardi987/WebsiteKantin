@@ -24,7 +24,7 @@ Route::get('/', function () {
     return view('/landing/index');
 });
 Route::get('/login', [AdminAuthController::class,'index'])->name('login')->middleware('guest');
-Route::post('/login/do', [AdminAuthController::class,'doLogin'])->middleware('guest');
+Route::post('/login/do', [AdminAuthController::class,'login']);
 Route::get('/logout', [AdminAuthController::class,'logout'])->middleware('auth');
 
 // Route::get('/', function () {

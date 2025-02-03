@@ -33,14 +33,14 @@
     }
 
     /* Background Gradient Styling */
-    .background-gradient {
+    /* .background-gradient {
         position: fixed;
         width: 100%;
         height: 100%;
         background: linear-gradient(135deg, #1e3c72, #2a5298, #6a89cc, #acc7d5, #ffffff);
         background-size: 300% 300%;
         animation: gradientAnimation 12s linear infinite;
-    }
+    } */
 
     /* Keyframes for Gradient Animation */
     @keyframes gradientAnimation {
@@ -88,7 +88,7 @@
 
 
 <body class="login-page">
-    <div class="background-gradient"></div>
+    {{-- <div class="background-gradient"></div> --}}
 
     <div class="login-box">
         <!-- /.login-logo -->
@@ -104,7 +104,7 @@
                         {{ session('loginError') }}
                     </div>
                 @endif
-                <form action="/login/do" method="post">
+                <form id="login-form" method="post">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
@@ -135,7 +135,6 @@
                         @enderror
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Login</button>
-
                 </form>
             </div>
             <!-- /.card-body -->
@@ -166,6 +165,82 @@
             this.querySelector("i").classList.toggle("fa-eye-slash");
         });
     </script>
+
+    <script>
+        // document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Mencegah form mengirim request secara default
+
+            const email = document.querySelector("input[name='email']").value;
+            const password = document.querySelector("input[name='password']").value;
+
+            fetch("http://127.0.0.1:9000/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Simpan token di localStorage
+                        localStorage.setItem("token", data.data.token);
+
+                        // Redirect ke halaman dashboard
+                        window.location.href = "/admin/dashboard";
+                    } else {
+                        // Tampilkan pesan error jika login gagal
+                        alert(data.message || "Login gagal, silakan coba lagi.");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        });
+        // });
+    </script>
+
+
+    {{-- <script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Mencegah form submit langsung
+
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+
+        fetch("/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Simpan token di localStorage
+                localStorage.setItem("token", data.data.token);
+
+                // Redirect ke halaman dashboard
+                window.location.href = data.redirect;
+            } else {
+                // Tampilkan pesan error jika login gagal
+                let errorMessage = document.getElementById("error-message");
+                errorMessage.textContent = data.message;
+                errorMessage.classList.remove("d-none"); // Tampilkan error message
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+</script> --}}
+
 </body>
 
 </html>

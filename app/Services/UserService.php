@@ -15,9 +15,9 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function getAllUsers(): iterable
+    public function getAllUsers(?string $search = null): iterable
     {
-        return $this->userRepository->getAll();
+        return $this->userRepository->getAll($search);
     }
 
     public function getUserById(int $id): ?\App\Models\User

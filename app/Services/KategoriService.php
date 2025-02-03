@@ -13,9 +13,9 @@ class KategoriService
         $this->kategoriRepository = $kategoriRepository;
     }
 
-    public function getAllCategories(int $pagination): mixed
+    public function getAllCategories(int $pagination, ?string $search = null): mixed
     {
-        return $this->kategoriRepository->getAll($pagination);
+        return $this->kategoriRepository->getAll($pagination, $search);
     }
 
     public function getCategoryById(string $id): mixed
