@@ -111,11 +111,6 @@
         });
     });
 </script>
-            });
-        });
-    });
-</script>
-
 
 <script>
     function togglePasswordVisibility(toggleId, inputId) {

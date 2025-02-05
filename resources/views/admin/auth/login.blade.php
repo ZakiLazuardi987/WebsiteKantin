@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login Website Kantin</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -88,10 +89,7 @@
 
 
 <body class="login-page">
-    {{-- <div class="background-gradient"></div> --}}
-
     <div class="login-box">
-        <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <a href="/" class="h2"><b>Website Kantin</b></a>
@@ -99,50 +97,28 @@
             <div class="card-body">
                 <p class="login-box-msg">Silahkan Login!</p>
 
-                @if (session()->has('loginError'))
-                    <div class="alert alert-danger">
-                        {{ session('loginError') }}
-                    </div>
-                @endif
-                <form id="login-form" method="post">
+                <div id="alert-message"></div>
+
+                <form id="login-form">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                            placeholder="Email">
-
-                        @error('email')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <input type="email" class="form-control" name="email" placeholder="Email" required>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password"
-                            class="form-control @error('password') is-invalid @enderror border-right-0" name="password"
-                            placeholder="Password" id="password-input">
+                        <input type="password" class="form-control border-right-0" name="password"
+                            placeholder="Password" id="password-input" required>
                         <div class="input-group-append">
-                            <!-- Ikon mata untuk toggle show/hide password -->
                             <span class="input-group-text bg-white border-left-0" id="toggle-password"
                                 style="cursor: pointer;">
                                 <i class="fas fa-eye"></i>
                             </span>
                         </div>
-
-                        @error('password')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </form>
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </div>
-    <!-- /.login-box -->
-
 
     <!-- jQuery -->
     <script src="/assets/plugins/jquery/jquery.min.js"></script>
@@ -151,56 +127,77 @@
     <!-- AdminLTE App -->
     <script src="/assets/dist/js/adminlte.min.js"></script>
 
-    <script>
+    {{-- <script>
         // JavaScript untuk toggle show/hide password
         const togglePassword = document.querySelector("#toggle-password");
         const passwordInput = document.querySelector("#password-input");
 
         togglePassword.addEventListener("click", function() {
-            // Toggle antara tipe password dan teks
             const type = passwordInput.type === "password" ? "text" : "password";
             passwordInput.type = type;
-
-            // Toggle ikon mata
             this.querySelector("i").classList.toggle("fa-eye-slash");
         });
-    </script>
+
+        // Handle login form submission
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+            let response = await fetch('http://localhost:9000/api/login', {
+                method: 'POST',
+                body: formData
+            });
+
+            let result = await response.json();
+            if (result.success) {
+                localStorage.setItem('token', result.data.token);
+                document.getElementById('alert-message').innerHTML =
+                    '<div class="alert alert-success">Login berhasil! Mengalihkan ke dashboard...</div>';
+                setTimeout(() => {
+                    window.location.href = "/admin/dashboard";
+                }, 1500);
+            } else {
+                document.getElementById('alert-message').innerHTML =
+                    '<div class="alert alert-danger">Login gagal: ' + result.message + '</div>';
+            }
+        });
+    </script> --}}
 
     <script>
-        // document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("login-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Mencegah form mengirim request secara default
+        document.getElementById("login-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
 
             const email = document.querySelector("input[name='email']").value;
             const password = document.querySelector("input[name='password']").value;
 
-            fetch("http://127.0.0.1:9000/api/login", {
+            try {
+                const response = await fetch("http://127.0.0.1:9000/api/login", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
                         email: email,
                         password: password
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Simpan token di localStorage
-                        localStorage.setItem("token", data.data.token);
+                });
 
-                        // Redirect ke halaman dashboard
-                        window.location.href = "/admin/dashboard";
-                    } else {
-                        // Tampilkan pesan error jika login gagal
-                        alert(data.message || "Login gagal, silakan coba lagi.");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
+                const data = await response.json();
+
+                if (data.success) {
+                    // ✅ Simpan token ke localStorage
+                    localStorage.setItem("token", data.data.token);
+
+                    // ✅ Redirect ke halaman dashboard
+                    window.location.href = "/admin/dashboard";
+                } else {
+                    alert(data.message || "Login gagal, silakan coba lagi.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Terjadi kesalahan, silakan coba lagi.");
+            }
         });
-        // });
     </script>
 
 

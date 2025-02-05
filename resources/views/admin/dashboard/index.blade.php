@@ -1,7 +1,8 @@
 <style>
     .welcome-banner {
         background: #3b82f6;
-        border-radius: 10px; /* Menambahkan border-radius */
+        border-radius: 10px;
+        /* Menambahkan border-radius */
     }
 
     .welcome-banner:hover {
@@ -11,8 +12,10 @@
     .dashboard-card {
         transition: all 0.3s ease;
         border: none;
-        border-radius: 10px; /* Menambahkan border-radius */
-        overflow: hidden; /* Agar isi tidak melampaui radius */
+        border-radius: 10px;
+        /* Menambahkan border-radius */
+        overflow: hidden;
+        /* Agar isi tidak melampaui radius */
     }
 
     .dashboard-card:hover {
@@ -43,7 +46,8 @@
         position: absolute;
         top: 15px;
         right: 15px;
-        border-radius: 10px; /* Menambahkan radius pada badge */
+        border-radius: 10px;
+        /* Menambahkan radius pada badge */
     }
 
     .category-badge.badge.bg-warning.text-white {
@@ -61,8 +65,10 @@
     .chart-container {
         height: 400px;
         margin-top: 40px;
-        border-radius: 10px; /* Menambahkan border-radius pada container chart */
-        overflow: hidden; /* Agar isi tetap dalam radius */
+        border-radius: 10px;
+        /* Menambahkan border-radius pada container chart */
+        overflow: hidden;
+        /* Agar isi tetap dalam radius */
     }
 </style>
 
@@ -72,8 +78,8 @@
         <!-- Welcome Message -->
         <div class="welcome-banner card mb-3 shadow" style="background-color: white">
             <div class="card-body d-flex align-items-center py-4">
+                <h3 class="m-0 text-primary">Halo, Selamat Datang di Website Kantin!</h3>
                 <i class="fas fa-hand- text-white display-4 me-3"></i>
-                <h3 class="m-0 text-primary">Halo {{ Auth::user()->name }}, Selamat Datang di Website Kantin!</h3>
             </div>
         </div>
 
@@ -148,40 +154,88 @@
         </div>
     </div>
 
-    <script>
-        // Mempercepat Animasi Counting dan Menambahkan Format "Rp"
-        function countUp(elementId, endValue, isCurrency = false) {
-            let startValue = 0;
-            let increment = endValue / 100; // Menambah lebih cepat
-            let interval = setInterval(() => {
-                startValue += increment;
-                if (startValue >= endValue) {
-                    startValue = endValue;
-                    clearInterval(interval);
+    {{-- // Fetch API untuk mendapatkan data dashboard setelah login
+        async function fetchData() {
+            let token = localStorage.getItem('token');
+            if (!token) {
+                console.log("Token tidak ditemukan, pengguna belum login.");
+                return;
+            }
+
+            let response = await fetch('http://localhost:9000/api/dashboard', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
                 }
-                // Menambahkan format angka jika currency
-                if (isCurrency) {
-                    document.getElementById(elementId).textContent = 'Rp ' + new Intl.NumberFormat().format(Math
-                        .floor(startValue));
-                } else {
-                    document.getElementById(elementId).textContent = Math.floor(startValue);
-                }
-            }, 10); // Interval lebih cepat
+            });
+
+            let data = await response.json();
+            console.log(data);
         }
 
-        // Memulai counting untuk setiap elemen
-        window.onload = () => {
-            countUp("jumlahProduk", {{ $jumlahProduk }});
-            countUp("jumlahUser", {{ $jumlahUser }});
-            countUp("jumlahTransaksi", {{ $jumlahTransaksi }});
-            countUp("jumlahPendapatan", {{ $jumlahPendapatan }}, true);
+        fetchData(); --}}
 
-            // Data untuk Chart
-            const labels = {!! json_encode(array_keys($pendapatanPerHari)) !!};
-            const dataPendapatan = {!! json_encode(array_values($pendapatanPerHari)) !!};
+    <script>
+        window.onload = () => {
+            fetchDashboardData();
+        };
+
+        async function fetchDashboardData() {
+            let token = localStorage.getItem('token');
+
+            if (!token) {
+                console.log("Token tidak ditemukan, mengalihkan ke halaman login.");
+                window.location.href = "/login";
+                return;
+            }
+
+            try {
+                let response = await fetch('http://127.0.0.1:9000/api/dashboard', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                let result = await response.json();
+                console.log(result);
+
+                if (result.success) {
+                    // Update angka di dashboard
+                    countUp("jumlahProduk", result.jumlahProduk);
+                    countUp("jumlahUser", result.jumlahUser);
+                    countUp("jumlahTransaksi", result.jumlahTransaksi);
+                    countUp("jumlahPendapatan", result.jumlahPendapatan, true);
+
+                    // Update Chart setelah data didapat
+                    updatePendapatanChart(result.pendapatanPerHari);
+                } else {
+                    console.log("Gagal mengambil data dashboard:", result.message);
+                }
+            } catch (error) {
+                console.error("Error saat mengambil data:", error);
+            }
+        }
+
+        function updatePendapatanChart(pendapatanPerHariData) {
+            if (!pendapatanPerHariData || Object.keys(pendapatanPerHariData).length === 0) {
+                console.log("Data pendapatan per hari kosong atau tidak ditemukan.");
+                return;
+            }
+
+            const labels = Object.keys(pendapatanPerHariData); // Tanggal
+            const dataPendapatan = Object.values(pendapatanPerHariData); // Pendapatan
 
             const ctx = document.getElementById('pendapatanChart').getContext('2d');
-            const pendapatanChart = new Chart(ctx, {
+
+            // Hapus chart lama jika ada
+            if (window.pendapatanChart instanceof Chart) {
+                window.pendapatanChart.destroy();
+            }
+
+            // Buat chart baru
+            window.pendapatanChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
@@ -189,7 +243,7 @@
                         label: 'Pendapatan Harian',
                         data: dataPendapatan,
                         borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(219 234, 254, 0.4)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
                         fill: true,
                         tension: 0.4
                     }]
@@ -214,12 +268,118 @@
                     }
                 }
             });
-        };
+        }
+
+
+        // Mempercepat Animasi Counting dan Menambahkan Format "Rp"
+        function countUp(elementId, endValue, isCurrency = false) {
+            let startValue = 0;
+            let increment = endValue / 100; // Menambah lebih cepat
+            let interval = setInterval(() => {
+                startValue += increment;
+                if (startValue >= endValue) {
+                    startValue = endValue;
+                    clearInterval(interval);
+                }
+                // Menambahkan format angka jika currency
+                if (isCurrency) {
+                    document.getElementById(elementId).textContent = 'Rp ' + new Intl.NumberFormat().format(Math
+                        .floor(startValue));
+                } else {
+                    document.getElementById(elementId).textContent = Math.floor(startValue);
+                }
+            }, 10); // Interval lebih cepat
+        }
+
+        // async function fetchDashboardData() {
+        //     let token = localStorage.getItem('token');
+
+        //     if (!token) {
+        //         console.log("Token tidak ditemukan, mengalihkan ke halaman login.");
+        //         window.location.href = "/login";
+        //         return;
+        //     }
+
+        //     try {
+        //         let response = await fetch('http://127.0.0.1:9000/api/dashboard', {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Authorization': 'Bearer ' + token,
+        //                 'Accept': 'application/json'
+        //             }
+        //         });
+
+        //         let result = await response.json();
+        //         console.log(result);
+        //         if (result.success) {
+        //             document.getElementById("jumlahProduk").textContent = result.jumlahProduk;
+        //             document.getElementById("jumlahUser").textContent = result.jumlahUser;
+        //             document.getElementById("jumlahTransaksi").textContent = result.jumlahTransaksi;
+        //             document.getElementById("jumlahPendapatan").textContent = "Rp " + new Intl.NumberFormat().format(
+        //                 result.jumlahPendapatan);
+
+        //             // Update Chart
+        //             updatePendapatanChart(result.pendapatanPerHari);
+        //         } else {
+        //             console.log("Gagal mengambil data dashboard:", result.message);
+        //         }
+        //     } catch (error) {
+        //         console.error("Error saat mengambil data:", error);
+        //     }
+        // }
+
+        // Memulai counting untuk setiap elemen
+        // window.onload = () => {
+        //     fetchDashboardData();
+        //     countUp("jumlahProduk", result.jumlahProduk);
+        //     countUp("jumlahUser", result.jumlahUser);
+        //     countUp("jumlahTransaksi", result.jumlahTransaksi);
+        //     countUp("jumlahPendapatan", result.jumlahPendapatan, true);
+
+        //     // Data untuk Chart
+        //     const labels = Object.keys(result.pendapatanPerHari);
+        //     const dataPendapatan = Object.values(result.pendapatanPerHari);
+
+        //     const ctx = document.getElementById('pendapatanChart').getContext('2d');
+        //     const pendapatanChart = new Chart(ctx, {
+        //         type: 'line',
+        //         data: {
+        //             labels: labels,
+        //             datasets: [{
+        //                 label: 'Pendapatan Harian',
+        //                 data: dataPendapatan,
+        //                 borderColor: '#3b82f6',
+        //                 backgroundColor: 'rgba(219 234, 254, 0.4)',
+        //                 fill: true,
+        //                 tension: 0.4
+        //             }]
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             maintainAspectRatio: false,
+        //             scales: {
+        //                 x: {
+        //                     title: {
+        //                         display: true,
+        //                         text: 'Tanggal'
+        //                     }
+        //                 },
+        //                 y: {
+        //                     title: {
+        //                         display: true,
+        //                         text: 'Pendapatan (Rp)'
+        //                     },
+        //                     beginAtZero: true
+        //                 }
+        //             }
+        //         }
+        //     });
+        // };
     </script>
 
     <script>
         // Mendapatkan data dari controller (misalnya $pendapatanPerHari)
-        var pendapatanPerHariData = @json($pendapatanPerHari);
+        var pendapatanPerHariData = result.pendapatanPerHari;
 
         // Format data untuk Chart.js
         var labels = Object.keys(pendapatanPerHariData); // Hari-hari (keys)

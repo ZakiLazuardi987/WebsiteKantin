@@ -6,15 +6,18 @@ use App\Http\Controllers\AdminKategoriController;
 use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\Api\ApiAuthController;
+use App\Http\Controllers\Api\ApiKategoriController;
+use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [AdminAuthController::class, 'login']);
-Route::post('/logout', [AdminAuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/login', [ApiAuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']);
 
 // Group API dengan autentikasi
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('dashboard', [DashboardController::class, 'data'])->name('dashboard.data');
 
     // Transaksi detail
@@ -36,7 +39,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/transaksi/{id}', [AdminTransaksiController::class, 'destroy']);
 
     // CRUD Produk, Kategori, dan User menggunakan API Resource
-    Route::apiResource('/produk', AdminProdukController::class);
-    Route::apiResource('/kategori', AdminKategoriController::class);
-    Route::apiResource('/user', AdminUserController::class);
+    Route::apiResource('/produk', controller: AdminProdukController::class);
+    Route::apiResource('/kategori', controller: ApiKategoriController::class);
+});
+
+Route::middleware('auth:sanctum')->prefix('users')->group(function () {
+    Route::get('/', [ApiUserController::class, 'index']);
+    Route::post('/', [ApiUserController::class, 'store']);
+    Route::get('/{id}', [ApiUserController::class, 'show']);
+    Route::put('/{id}', [ApiUserController::class, 'update']);
+    Route::delete('/{id}', [ApiUserController::class, 'destroy']);
 });

@@ -50,31 +50,16 @@ use App\Models\Produk;
 use App\Models\User;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Mengambil data yang dibutuhkan untuk tampilan
-        $jumlahProduk = Produk::count();
-        $jumlahUser = User::count();
-        $jumlahTransaksi = Transaksi::count();
-        $jumlahPendapatan = Transaksi::sum('total');
-        $pendapatanPerHari = Transaksi::selectRaw('DATE(created_at) as tanggal, SUM(total) as pendapatan')
-            ->groupBy('tanggal')
-            ->orderBy('tanggal', 'asc')
-            ->pluck('pendapatan', 'tanggal')
-            ->toArray();
-
-        // Menyusun data untuk dikirim ke view
         $data = [
             'title' => 'Dashboard',
-            'jumlahProduk' => $jumlahProduk,
-            'jumlahUser' => $jumlahUser,
-            'jumlahTransaksi' => $jumlahTransaksi,
-            'jumlahPendapatan' => $jumlahPendapatan,
-            'pendapatanPerHari' => $pendapatanPerHari,
             'content' => 'admin/dashboard/index',
+            'user' => Auth::user(),
         ];
 
         // Mengembalikan view dengan data
@@ -83,6 +68,7 @@ class DashboardController extends Controller
     
     public function data()
     {
+        $user = Auth::user();
         // Mengambil data untuk API
         $jumlahProduk = Produk::count();
         $jumlahUser = User::count();
@@ -96,8 +82,10 @@ class DashboardController extends Controller
 
         // Menyusun data untuk respons API
         $data = [
+            'success' => true,
             'status' => 'success',
             'message' => 'Dashboard data retrieved successfully',
+            'user' => $user ? ['name' => $user->name, 'email' => $user->email] : null,
             'jumlahProduk' => $jumlahProduk,
             'jumlahUser' => $jumlahUser,
             'jumlahTransaksi' => $jumlahTransaksi,
