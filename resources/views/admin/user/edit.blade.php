@@ -62,9 +62,6 @@
     </div>
 </div>
 
-<!-- Include SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     const segments = window.location.pathname.split("/");
     const userId = segments[segments.length - 2];
