@@ -26,7 +26,7 @@
                         </div>
                     @endif
 
-                    <table class="table mt-2">
+                    <table class="table pt-2">
                         <thead>
                             <tr>
                                 <th>No</th>
