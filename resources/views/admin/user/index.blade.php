@@ -8,13 +8,13 @@
 
                     <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
                         <a href="/admin/user/create" class="btn btn-primary"><i class="fas fa-plus mr-2"></i>Tambah</a>
-                        <form action="/admin/user" method="GET" class="form-inline">
+                        <form class="form-inline">
                             <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Cari User"
-                                    value="{{ request('search') }}">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Cari User">
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i>
-                                        Cari</button>
+                                    <button type="button" class="btn btn-secondary" onclick="filterUsers()">
+                                        <i class="fas fa-search"></i> Cari
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -26,7 +26,7 @@
                         </div>
                     @endif
 
-                    <table class="table mt-2 ">
+                    <table class="table mt-2">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -38,27 +38,6 @@
                         <tbody id="userTableBody">
                             <!-- Data akan diisi dengan JavaScript -->
                         </tbody>
-
-                        {{-- @foreach ($user as $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->email }}</td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="/admin/user/{{ $item->id }}/edit" class="btn btn-sm btn-info"><i
-                                                class="fa fa-edit mr-1"></i>Edit</a>
-                                        <form action="/admin/user/{{ $item->id }}" method="POST"
-                                            class="delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger ml-1"><i
-                                                    class="fa fa-trash mr-1"></i>Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach --}}
                     </table>
                 </div>
             </div>
@@ -66,6 +45,8 @@
     </div>
 </div>
 <script>
+    let usersData = [];
+
     async function fetchUsers() {
         let token = localStorage.getItem('token');
 
@@ -81,7 +62,8 @@
             let result = await response.json();
 
             if (result.status === "success") {
-                populateTable(result.data);
+                usersData = result.data;
+                populateTable(usersData);
             } else {
                 console.error("Gagal mengambil data pengguna:", result.message);
             }
@@ -92,32 +74,41 @@
 
     function populateTable(users) {
         const userTableBody = document.getElementById("userTableBody");
-        userTableBody.innerHTML = ""; // Kosongkan tabel sebelum mengisi
+        userTableBody.innerHTML = "";
 
         users.forEach((user, index) => {
             const row = `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>
-                            <div class="d-flex">
-                                <a href="/admin/user/${user.id}/edit" class="btn btn-sm btn-info">
-                                    <i class="fa fa-edit mr-1"></i>Edit
-                                </a>
-                                <button class="btn btn-sm btn-danger ml-1" onclick="deleteUser(${user.id})">
-                                    <i class="fa fa-trash mr-1"></i>Hapus
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <div class="d-flex">
+                            <a href="/admin/user/${user.id}/edit" class="btn btn-sm btn-info">
+                                <i class="fa fa-edit mr-1"></i>Edit
+                            </a>
+                            <button class="btn btn-sm btn-danger ml-1" onclick="deleteUser(${user.id})">
+                                <i class="fa fa-trash mr-1"></i>Hapus
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
             userTableBody.innerHTML += row;
         });
     }
 
+    function filterUsers() {
+        let searchValue = document.getElementById("searchInput").value.toLowerCase();
+        let filteredUsers = usersData.filter(user =>
+            user.name.toLowerCase().includes(searchValue) ||
+            user.email.toLowerCase().includes(searchValue)
+        );
+        populateTable(filteredUsers);
+    }
+
+    document.getElementById("searchInput").addEventListener("keyup", filterUsers);
+
     async function deleteUser(userId) {
-        // Tampilkan konfirmasi dengan SweetAlert sebelum menghapus
         const result = await Swal.fire({
             title: 'Konfirmasi Hapus',
             text: "Apakah Anda yakin ingin menghapus data ini?",
@@ -131,7 +122,6 @@
 
         if (!result.isConfirmed) return;
 
-        // Melakukan permintaan untuk menghapus user
         let token = localStorage.getItem('token');
 
         try {
@@ -147,7 +137,7 @@
 
             if (data.status === 'success') {
                 Swal.fire('Sukses!', 'User berhasil dihapus!', 'success');
-                fetchUsers(); // Refresh tabel setelah penghapusan
+                fetchUsers();
             } else {
                 Swal.fire('Gagal!', 'Gagal menghapus user: ' + data.message, 'error');
             }
@@ -156,27 +146,6 @@
             console.error('Error deleting user:', error);
         }
     }
-
-    // window.deleteUser = function(userId) {
-    //     if (!confirm("Apakah Anda yakin ingin menghapus pengguna ini?")) return;
-
-    //     fetch(`/api/users/${userId}`, {
-    //             method: "DELETE",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             }
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data.status === "success") {
-    //                 alert("User berhasil dihapus!");
-    //                 fetchUsers(); // Refresh tabel setelah penghapusan
-    //             } else {
-    //                 alert("Gagal menghapus user: " + data.message);
-    //             }
-    //         })
-    //         .catch(error => console.error("Error deleting user:", error));
-    // };
 
     document.addEventListener("DOMContentLoaded", function() {
         fetchUsers();

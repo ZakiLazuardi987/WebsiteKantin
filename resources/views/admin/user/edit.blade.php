@@ -22,18 +22,36 @@
                             </div>
                             <div class="form-group">
                                 <label for=""><b>Password Lama</b></label>
-                                <input type="password" class="form-control" name="old_password"
-                                    placeholder="Password Lama" id="old_password">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="old_password" placeholder="Password Lama" id="old_password">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-left-0 toggle-password" data-target="old_password" style="cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for=""><b>Password Baru</b></label>
-                                <input type="password" class="form-control" name="password" placeholder="Password Baru"
-                                    id="password">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="password" placeholder="Password Baru" id="password">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-left-white toggle-password" data-target="password" style="cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for=""><b>Konfirmasi Password</b></label>
-                                <input type="password" class="form-control" name="re_password"
-                                    placeholder="Konfirmasi Password" id="re_password">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="re_password" placeholder="Konfirmasi Password" id="re_password">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-left-0 toggle-password" data-target="re_password" style="cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <a href="/admin/user" class="btn btn-secondary">Kembali</a>
                             <button type="button" id="saveButton" class="btn btn-primary">Simpan</button>
@@ -44,6 +62,9 @@
     </div>
 </div>
 
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     const segments = window.location.pathname.split("/");
     const userId = segments[segments.length - 2];
@@ -52,6 +73,25 @@
         if (userId) {
             await fetchUserData(userId);
         }
+
+        // Toggle password visibility
+        document.querySelectorAll(".toggle-password").forEach(function(toggle) {
+            toggle.addEventListener("click", function() {
+                let inputId = this.getAttribute("data-target");
+                let input = document.getElementById(inputId);
+                let icon = this.querySelector("i");
+
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    input.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            });
+        });
 
         document.getElementById("saveButton").addEventListener("click", function(event) {
             event.preventDefault();
@@ -87,17 +127,23 @@
         let re_password = document.querySelector("input[name='re_password']").value;
         let old_password = document.querySelector("input[name='old_password']").value;
 
+        // Cek apakah password baru diisi, jika iya, validasi konfirmasi password
+        if (password && password !== re_password) {
+            Swal.fire("Gagal!", "Konfirmasi password tidak cocok!", "error");
+            return;
+        }
+
         let data = {
             name,
             email,
             old_password
         };
+
         if (password) {
             data.password = password;
             data.re_password = re_password;
         }
 
-        // Tampilkan konfirmasi SweetAlert
         Swal.fire({
             title: 'Konfirmasi Simpan',
             text: 'Apakah Anda yakin ingin mengubah data ini?',
@@ -120,28 +166,16 @@
                     });
                     let result = await response.json();
                     if (result.status === "success") {
-                        // SweetAlert success setelah update berhasil
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Sukses!',
-                            text: 'Data berhasil diperbarui!',
-                        }).then(() => {
-                            window.location.href =
-                            "/admin/user"; // Redirect setelah SweetAlert ditutup
+                        Swal.fire("Sukses!", "Data berhasil diperbarui!", "success").then(() => {
+                            window.location.href = "/admin/user";
                         });
                     } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal!',
-                            text: 'Gagal memperbarui: ' + result.message,
-                        });
+                        Swal.fire("Gagal!", result.message || "Gagal memperbarui data", "error");
                     }
                 } catch (error) {
                     console.error("Error updating user:", error);
+                    Swal.fire("Error!", "Terjadi kesalahan saat memperbarui data", "error");
                 }
-            } else {
-                // Jika user membatalkan
-                console.log("Pembaharuan data dibatalkan.");
             }
         });
     }
