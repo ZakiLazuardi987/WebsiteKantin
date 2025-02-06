@@ -12,8 +12,8 @@
     }
 
     .icon-circle {
-        width: 50px;
-        height: 50px;
+        width: 55px;
+        height: 55px;
         border-radius: 50%;
         display: flex;
         align-items: center;
