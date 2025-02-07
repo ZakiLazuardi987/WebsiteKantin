@@ -6,7 +6,7 @@ use App\Models\User;
 
 interface UserRepositoryInterface
 {
-    public function getAll(): iterable;
+    public function getAll(?string $search = null): iterable;
     public function findById(int $id): ?User;
     public function create(array $data): User;
     public function update(User $user, array $data): bool;
