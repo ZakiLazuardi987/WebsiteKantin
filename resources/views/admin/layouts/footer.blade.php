@@ -112,7 +112,7 @@
     });
 </script>
 
-<script>
+{{-- <script>
     function togglePasswordVisibility(toggleId, inputId) {
         const toggleElement = document.getElementById(toggleId);
         const inputElement = document.getElementById(inputId);
@@ -130,7 +130,7 @@
     togglePasswordVisibility('toggle-password', 'password');
     togglePasswordVisibility('toggle-re-password', 're_password');
     togglePasswordVisibility('toggle-old-password', 'old_password');
-</script>
+</script> --}}
 
 </body>
 

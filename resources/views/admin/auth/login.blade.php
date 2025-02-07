@@ -127,42 +127,6 @@
     <!-- AdminLTE App -->
     <script src="/assets/dist/js/adminlte.min.js"></script>
 
-    {{-- <script>
-        // JavaScript untuk toggle show/hide password
-        const togglePassword = document.querySelector("#toggle-password");
-        const passwordInput = document.querySelector("#password-input");
-
-        togglePassword.addEventListener("click", function() {
-            const type = passwordInput.type === "password" ? "text" : "password";
-            passwordInput.type = type;
-            this.querySelector("i").classList.toggle("fa-eye-slash");
-        });
-
-        // Handle login form submission
-        document.getElementById('login-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            let formData = new FormData(this);
-            let response = await fetch('http://localhost:9000/api/login', {
-                method: 'POST',
-                body: formData
-            });
-
-            let result = await response.json();
-            if (result.success) {
-                localStorage.setItem('token', result.data.token);
-                document.getElementById('alert-message').innerHTML =
-                    '<div class="alert alert-success">Login berhasil! Mengalihkan ke dashboard...</div>';
-                setTimeout(() => {
-                    window.location.href = "/admin/dashboard";
-                }, 1500);
-            } else {
-                document.getElementById('alert-message').innerHTML =
-                    '<div class="alert alert-danger">Login gagal: ' + result.message + '</div>';
-            }
-        });
-    </script> --}}
-
     <script>
         document.getElementById("login-form").addEventListener("submit", async function(event) {
             event.preventDefault();
@@ -171,10 +135,11 @@
             const password = document.querySelector("input[name='password']").value;
 
             try {
-                const response = await fetch("http://127.0.0.1:9000/api/login", {
+                const response = await fetch("http://127.0.0.1:8000/api/login", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        'X-CSRFTOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
                         email: email,
@@ -187,7 +152,7 @@
                 if (data.success) {
                     // ✅ Simpan token ke localStorage
                     localStorage.setItem("token", data.data.token);
-
+                    console.log(data);
                     // ✅ Redirect ke halaman dashboard
                     window.location.href = "/admin/dashboard";
                 } else {
@@ -199,44 +164,6 @@
             }
         });
     </script>
-
-
-    {{-- <script>
-    document.getElementById("login-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Mencegah form submit langsung
-
-        let email = document.getElementById("email").value;
-        let password = document.getElementById("password").value;
-
-        fetch("/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Simpan token di localStorage
-                localStorage.setItem("token", data.data.token);
-
-                // Redirect ke halaman dashboard
-                window.location.href = data.redirect;
-            } else {
-                // Tampilkan pesan error jika login gagal
-                let errorMessage = document.getElementById("error-message");
-                errorMessage.textContent = data.message;
-                errorMessage.classList.remove("d-none"); // Tampilkan error message
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    });
-</script> --}}
 
 </body>
 

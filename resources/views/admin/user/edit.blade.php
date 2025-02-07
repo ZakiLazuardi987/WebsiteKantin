@@ -99,7 +99,7 @@
     async function fetchUserData(userId) {
         let token = localStorage.getItem("token");
         try {
-            let response = await fetch(`http://127.0.0.1:9000/api/users/${userId}`, {
+            let response = await fetch(`http://127.0.0.1:8000/api/users/${userId}`, {
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + token,
@@ -153,7 +153,7 @@
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let response = await fetch(`http://127.0.0.1:9000/api/users/${userId}`, {
+                    let response = await fetch(`http://127.0.0.1:8000/api/users/${userId}`, {
                         method: "PUT",
                         headers: {
                             "Authorization": "Bearer " + token,

@@ -51,7 +51,7 @@
         let token = localStorage.getItem('token');
 
         try {
-            let response = await fetch('http://127.0.0.1:9000/api/users', {
+            let response = await fetch('http://127.0.0.1:8000/api/users', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token,

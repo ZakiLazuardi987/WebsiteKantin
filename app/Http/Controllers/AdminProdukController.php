@@ -109,7 +109,6 @@
 //         return redirect()->back();
 //     }
 // }
-
 namespace App\Http\Controllers;
 
 use App\Services\ProdukService;
@@ -129,108 +128,47 @@ class AdminProdukController extends Controller
         $this->fileUploadService = $fileUploadService;
     }
 
-    // Menampilkan daftar produk dengan paginasi dan pencarian dalam bentuk API
     public function index(Request $request)
     {
         $perPage = $request->get('perPage', 5);
-        $search = $request->get('search', '');
-
+        $search = $request->get('search');
         $produks = $this->produkService->getPaginatedProducts($perPage, $search);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $produks,
-            'message' => 'Produk berhasil diambil.',
-        ], 200);
+        $data = [
+            'title' => 'Kelola Produk',
+            'produk' => $produks,
+            'kategori' => Kategori::get(),
+            'search' => $search,
+            'perPage' => $perPage,
+            'content' => 'admin.produk.index',
+        ];
+
+        return view('admin.layouts.wrapper', $data);
     }
 
-    // Menampilkan form tambah produk (diubah untuk response API)
     public function create()
     {
-        return response()->json([
-            'status' => 'success',
-            'kategori' => Kategori::all(),
-            'message' => 'Data kategori berhasil diambil.'
-        ], 200);
-    }
-
-    // Menyimpan produk baru (untuk API)
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required',
-            'kategori_id' => 'required',
-            'harga' => 'required',
-            'stok' => 'required',
-            'keterangan' => 'nullable',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        return view('admin.layouts.wrapper', [
+            'title' => 'Tambah Produk',
+            'kategori' => Kategori::get(),
+            'content' => 'admin/produk/create'
         ]);
-
-        if ($request->hasFile('gambar')) {
-            $data['gambar'] = $this->fileUploadService->uploadFile($request->file('gambar'), 'uploads/images/');
-        }
-
-        $product = $this->produkService->createProduct($data);
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $product,
-            'message' => 'Produk berhasil ditambahkan!',
-        ], 201);
     }
 
-    // Mengubah produk yang ada (untuk API)
-    public function update(Request $request, string $id)
-    {
-        $data = $request->validate([
-            'name' => 'required',
-            'kategori_id' => 'required',
-            'harga' => 'required',
-            'stok' => 'required',
-            'keterangan' => 'nullable',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-
-        if ($request->hasFile('gambar')) {
-            $data['gambar'] = $this->fileUploadService->uploadFile($request->file('gambar'), 'uploads/images/');
-        }
-
-        $product = $this->produkService->updateProduct($id, $data);
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $product,
-            'message' => 'Produk berhasil diubah!',
-        ], 200);
-    }
-
-    // Mengambil data produk untuk form edit produk (API)
     public function edit(string $id)
     {
-        $produk = $this->produkService->getProductById($id);
-
-        if (!$produk) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Produk tidak ditemukan!',
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $produk,
-            'message' => 'Data produk ditemukan.',
-        ], 200);
+        return view('admin.layouts.wrapper', [
+            'title' => 'Ubah Produk',
+            'produk' => $this->produkService->getProductById($id),
+            'kategori' => Kategori::get(),
+            'content' => 'admin/produk/edit'
+        ]);
     }
 
-    // Menghapus produk (API)
     public function destroy(string $id)
     {
         $this->produkService->deleteProduct($id);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Produk berhasil dihapus!',
-        ], 200);
+        Alert::success('Sukses', 'Produk telah dihapus!');
+        return redirect()->back();
     }
 }

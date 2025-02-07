@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TransaksiService::class, function ($app) {
             return new TransaksiService(
                 $app->make(TransaksiRepositoryInterface::class),
-                $app->make(DetailTransaksiRepositoryInterface::class)
+                // $app->make(DetailTransaksiRepositoryInterface::class)
             );
         });
 

@@ -2,84 +2,80 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-body ">
+                <div class="card-body">
                     <h5><b>{{ $title }}</b></h5>
                     <hr>
-
-                    <form action="/admin/produk" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('POST')
+                    
+                    <form id="produkForm" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="name">Nama Produk</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                name="name" placeholder="Nama Produk" value="{{ old('name') }}">
-
-                            @error('name')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-
-                            <label for="name">Kategori</label>
-                            <select name="kategori_id" class="form-control @error('kategori_id') is-invalid @enderror">
+                            <label for="name"><b>Nama Produk</b></label>
+                            <input type="text" class="form-control" name="name" placeholder="Nama Produk" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori_id"><b>Kategori</b></label>
+                            <select name="kategori_id" class="form-control" required>
                                 <option value="">-- Pilih Kategori --</option>
                                 @foreach ($kategori as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-
-                            @error('kategori_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-
-                            <label for="harga">Harga</label>
-                                <input type="number" class="form-control @error('harga') is-invalid @enderror"
-                                name="harga" placeholder="Harga" value="{{ old('harga') }}">
-
-                            @error('harga')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-
-                            <label for="stok">Stok</label>
-                                <input type="number" class="form-control @error('stok') is-invalid @enderror"
-                                name="stok" placeholder="Stok" value="{{ old('stok') }}">
-
-                            @error('stok')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-
-                            <label for="stok">Keterangan</label>
-                                <input type="text" class="form-control @error('keterangan') is-invalid @enderror"
-                                name="keterangan" placeholder="Keterangan" value="{{ old('keterangan') }}">
-
-                            @error('keterangan')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-
-                            <label for="gambar">Gambar</label>
-                            <input type="file" class="form-control @error('gambar') is-invalid @enderror"
-                                name="gambar" placeholder="Pilih Gambar" value="{{ old('gambar') }}">
-
-                            @error('gambar')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
                         </div>
-
-                        <a href="/admin/produk" class="btn btn-secondary"><i
-                                class="fas fa-arrow-left mr-2"></i>Kembali</a>
+                        <div class="form-group">
+                            <label for="harga"><b>Harga</b></label>
+                            <input type="number" class="form-control" name="harga" placeholder="Harga" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="stok"><b>Stok</b></label>
+                            <input type="number" class="form-control" name="stok" placeholder="Stok" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan"><b>Keterangan</b></label>
+                            <input type="text" class="form-control" name="keterangan" placeholder="Keterangan">
+                        </div>
+                        <div class="form-group">
+                            <label for="gambar"><b>Gambar</b></label>
+                            <input type="file" class="form-control" name="gambar" accept="image/*">
+                        </div>
+                        
+                        <a href="/admin/produk" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("produkForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData(this);
+            let token = localStorage.getItem("token");
+
+            try {
+                let response = await fetch("http://127.0.0.1:8000/api/produk", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    body: formData
+                });
+                
+                let result = await response.json();
+                
+                if (result.status === "success") {
+                    Swal.fire("Sukses!", "Produk berhasil ditambahkan!", "success").then(() => {
+                        window.location.href = "/admin/produk";
+                    });
+                } else {
+                    Swal.fire("Gagal!", result.message || "Gagal menambahkan produk", "error");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                Swal.fire("Error!", "Terjadi kesalahan saat menambahkan produk", "error");
+            }
+        });
+    });
+</script>

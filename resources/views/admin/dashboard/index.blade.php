@@ -129,7 +129,7 @@
         };
 
         async function fetchDashboardData() {
-            let token = localStorage.getItem('token');
+            const token = localStorage.getItem('token');
 
             if (!token) {
                 console.log("Token tidak ditemukan, mengalihkan ke halaman login.");
@@ -138,7 +138,7 @@
             }
 
             try {
-                let response = await fetch('http://127.0.0.1:9000/api/dashboard', {
+                let response = await fetch('http://127.0.0.1:8000/api/dashboard', {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token,
