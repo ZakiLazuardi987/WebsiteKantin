@@ -21,10 +21,11 @@ class DashboardController extends Controller
         // Mengembalikan view dengan data
         return view('admin.layouts.wrapper', $data);
     }
-    
+
     public function data()
     {
         $user = Auth::user();
+
         // Mengambil data untuk API
         $jumlahProduk = Produk::count();
         $jumlahUser = User::count();
@@ -35,6 +36,15 @@ class DashboardController extends Controller
             ->orderBy('tanggal', 'asc')
             ->pluck('pendapatan', 'tanggal')
             ->toArray();
+
+        // Ambil produk terlaris berdasarkan jumlah yang dibeli dalam transaksi
+        $produkTerlaris = Transaksi::join('detail_transaksis', 'transaksis.id', '=', 'detail_transaksis.transaksi_id')
+            ->join('produks', 'detail_transaksis.produk_id', '=', 'produks.id')
+            ->selectRaw('produks.name, SUM(detail_transaksis.qty) as total_terjual')
+            ->groupBy('produks.name')
+            ->orderByDesc('total_terjual')
+            ->limit(5) // Ambil 5 produk terlaris
+            ->get();
 
         // Menyusun data untuk respons API
         $data = [
@@ -47,9 +57,9 @@ class DashboardController extends Controller
             'jumlahTransaksi' => $jumlahTransaksi,
             'jumlahPendapatan' => $jumlahPendapatan,
             'pendapatanPerHari' => $pendapatanPerHari,
+            'produkTerlaris' => $produkTerlaris, // Tambahkan produk terlaris
         ];
 
-        // Mengirimkan respons API dalam format JSON
         return response()->json($data, 200);
     }
 }

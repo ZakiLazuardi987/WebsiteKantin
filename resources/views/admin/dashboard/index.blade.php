@@ -116,9 +116,20 @@
         </div>
 
         <!-- Chart Container -->
-        <div class="card dashboard-card shadow">
-            <div class="chart-container">
-                <canvas id="pendapatanChart" class="chart"></canvas>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card dashboard-card shadow">
+                    <div class="chart-container">
+                        <canvas id="pendapatanChart" class="chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card dashboard-card shadow">
+                    <div class="chart-container">
+                        <canvas id="produkTerlarisChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -150,14 +161,12 @@
                 console.log(result);
 
                 if (result.success) {
-                    // Update angka di dashboard
                     countUp("jumlahProduk", result.jumlahProduk);
                     countUp("jumlahUser", result.jumlahUser);
                     countUp("jumlahTransaksi", result.jumlahTransaksi);
                     countUp("jumlahPendapatan", result.jumlahPendapatan, true);
-
-                    // Update Chart setelah data didapat
                     updatePendapatanChart(result.pendapatanPerHari);
+                    updateProdukTerlarisChart(result.produkTerlaris);
                 } else {
                     console.log("Gagal mengambil data dashboard:", result.message);
                 }
@@ -165,6 +174,7 @@
                 console.error("Error saat mengambil data:", error);
             }
         }
+
 
         function updatePendapatanChart(pendapatanPerHariData) {
             if (!pendapatanPerHariData || Object.keys(pendapatanPerHariData).length === 0) {
@@ -218,6 +228,58 @@
             });
         }
 
+        function updateProdukTerlarisChart(produkData) {
+            if (!produkData || produkData.length === 0) {
+                console.warn("Data produk terlaris kosong.");
+                return;
+            }
+
+            const ctx = document.getElementById('produkTerlarisChart').getContext('2d');
+
+            // Jika sudah ada chart sebelumnya, hapus terlebih dahulu
+            if (window.produkTerlarisChart instanceof Chart) {
+                window.produkTerlarisChart.destroy();
+            }
+
+            // Buat chart baru
+            window.produkTerlarisChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: produkData.map(p => p.name),
+                    datasets: [{
+                        label: 'Total Terjual',
+                        data: produkData.map(p => p.total_terjual),
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4caf50', '#9966ff'],
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom', 
+                            labels: {
+                                font: {
+                                    size: 12
+                                },
+                                padding: 15
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Produk Terlaris',
+                            font: {
+                                size: 16
+                            },
+                            padding: {
+                                bottom: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         // Mempercepat Animasi Counting dan Menambahkan Format "Rp"
         function countUp(elementId, endValue, isCurrency = false) {
