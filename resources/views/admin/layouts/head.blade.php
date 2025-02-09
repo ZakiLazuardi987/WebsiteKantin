@@ -21,7 +21,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="/assets/plugins/sweetalert2/sweetalert2.min.css">
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css"> --}}
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+    <script src="https://cdn.tailwindcss.com"></script>
     {{-- @vite(['/resources/css/app.css','/resources/js/app.js']) --}}
 
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo-color.png">

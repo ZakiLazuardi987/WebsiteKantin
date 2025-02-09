@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Services\DetailTransaksiService;
-use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class AdminDetailTransaksiController extends Controller
+class ApiDetailTransaksiController extends Controller
 {
     protected DetailTransaksiService $detailTransaksiService;
 
@@ -15,7 +17,7 @@ class AdminDetailTransaksiController extends Controller
         $this->detailTransaksiService = $detailTransaksiService;
     }
 
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $data = [
             'produk_id' => $request->produk_id,
@@ -27,11 +29,13 @@ class AdminDetailTransaksiController extends Controller
 
         $this->detailTransaksiService->createDetailTransaksi($data);
 
-        $transaksi = $this->detailTransaksiService->getTransaksiById($request->transaksi_id);
-        return redirect('/admin/transaksi/' . $transaksi->id . '/edit');
+        return response()->json([
+            'message' => 'Detail transaksi berhasil ditambahkan',
+            'data' => $this->detailTransaksiService->getTransaksiById($request->transaksi_id),
+        ], Response::HTTP_CREATED);
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): JsonResponse
     {   
         $id = $request->id;
         $this->detailTransaksiService->deleteDetailTransaksi($id);
@@ -39,13 +43,17 @@ class AdminDetailTransaksiController extends Controller
         $transaksi = $this->detailTransaksiService->getTransaksiById($request->transaksi_id);
         $transaksi->update(['total' => $transaksi->total - $request->subtotal]);
 
-        return redirect()->back();
+        return response()->json([
+            'message' => 'Detail transaksi berhasil dihapus',
+            'data' => $transaksi,
+        ], Response::HTTP_OK);
     }
 
-    public function done($id)
+    public function done($id): JsonResponse
     {
         $this->detailTransaksiService->finalizeTransaksi($id);
-        Alert::success('Sukses', 'Transaksi berhasil ditambahkan!');
-        return redirect('/admin/transaksi');
+        return response()->json([
+            'message' => 'Transaksi berhasil diselesaikan',
+        ], Response::HTTP_OK);
     }
 }
