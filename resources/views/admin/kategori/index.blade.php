@@ -6,7 +6,7 @@
                     <h5><b>{{ $title }}</b></h5>
                     <hr>
 
-                    <a href="/admin/kategori/create" class="btn btn-primary mt-2 mb-2"><i
+                    <a href="/admin/kategori/create" class="btn btn-primary mt-4 mb-2"><i
                             class="fas fa-plus mr-2"></i>Tambah</a>
                     <table class="table mt-2" id="kategori-table">
                         <thead>

@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5><b>{{ $title }}</b></h5>
+                    <h4><b>{{ $title }}</b></h4>
                     <hr>
 
                     @isset($user)
@@ -12,7 +12,7 @@
                             <form id="editForm">
                             @endisset
                             @csrf
-                            <div class="form-group">
+                            <div class="form-group m">
                                 <label for=""><b>Nama Lengkap</b></label>
                                 <input type="text" class="form-control" name="name" placeholder="Nama Lengkap">
                             </div>
