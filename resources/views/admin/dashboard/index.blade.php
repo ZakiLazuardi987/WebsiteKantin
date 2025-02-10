@@ -82,7 +82,7 @@
                         <i class="fas fa-users fa-lg"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted mb-1">Jumlah User</h6>
+                        <h6 class="text-bold text-muted mb-1">Jumlah User</h6>
                         <p class="stats-number text-success" id="jumlahUser">0</p>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         <i class="fas fa-handshake fa-lg text-white"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted mb-1">Jumlah Transaksi</h6>
+                        <h6 class="text-bold text-muted mb-1">Jumlah Transaksi</h6>
                         <p class="stats-number text-warning" id="jumlahTransaksi">0</p>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                         <i class="fas fa-money-bill fa-lg"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted mb-1">Jumlah Pendapatan</h6>
+                        <h6 class="text-bold text-muted mb-1">Jumlah Pendapatan</h6>
                         <p class="stats-number text-danger" id="jumlahPendapatan">Rp 0</p>
                     </div>
                 </div>
@@ -178,8 +178,8 @@
 
         function updatePendapatanChart(pendapatanPerHariData) {
             if (!pendapatanPerHariData || Object.keys(pendapatanPerHariData).length === 0) {
-                console.log("Data pendapatan per hari kosong atau tidak ditemukan.");
-                return;
+            console.log("Data pendapatan per hari kosong atau tidak ditemukan.");
+            return;
             }
 
             const labels = Object.keys(pendapatanPerHariData); // Tanggal
@@ -189,42 +189,45 @@
 
             // Hapus chart lama jika ada
             if (window.pendapatanChart instanceof Chart) {
-                window.pendapatanChart.destroy();
+            window.pendapatanChart.destroy();
             }
 
             // Buat chart baru
             window.pendapatanChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Pendapatan Harian',
-                        data: dataPendapatan,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Tanggal'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Pendapatan (Rp)'
-                            },
-                            beginAtZero: true
-                        }
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                label: 'Pendapatan Harian',
+                data: dataPendapatan,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                fill: true,
+                tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                x: {
+                    title: {
+                    display: true,
+                    text: 'Tanggal'
                     }
+                },
+                y: {
+                    title: {
+                    display: true,
+                    text: 'Pendapatan (Rp)'
+                    },
+                    beginAtZero: true
                 }
+                },
+                animation: {
+                duration: 1500 // Menambahkan durasi animasi menjadi lebih lama
+                }
+            },
             });
         }
 
@@ -249,7 +252,7 @@
                     datasets: [{
                         label: 'Total Terjual',
                         data: produkData.map(p => p.total_terjual),
-                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4caf50', '#9966ff'],
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6c757d'],
                         hoverOffset: 8
                     }]
                 },
@@ -258,7 +261,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom', 
+                            position: 'bottom',
                             labels: {
                                 font: {
                                     size: 12
@@ -276,6 +279,9 @@
                                 bottom: 15
                             }
                         }
+                    },
+                    animation: {
+                        duration: 1500 // Menambahkan durasi animasi menjadi lebih lama
                     }
                 }
             });
@@ -302,46 +308,4 @@
         }
     </script>
 
-    <script>
-        // Mendapatkan data dari controller (misalnya $pendapatanPerHari)
-        var pendapatanPerHariData = result.pendapatanPerHari;
-
-        // Format data untuk Chart.js
-        var labels = Object.keys(pendapatanPerHariData); // Hari-hari (keys)
-        var data = Object.values(pendapatanPerHariData); // Pendapatan per hari (values)
-
-        // Membuat chart pendapatan per hari
-        var ctx = document.getElementById('pendapatanPerHariChart').getContext('2d');
-        var pendapatanPerHariChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels, // X-axis labels (hari)
-                datasets: [{
-                    label: 'Pendapatan',
-                    data: data, // Y-axis data (pendapatan)
-                    fill: false,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Pendapatan Per Hari'
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-</body>
+    </body>

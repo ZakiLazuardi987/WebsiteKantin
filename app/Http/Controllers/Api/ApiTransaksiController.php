@@ -18,17 +18,9 @@ class ApiTransaksiController extends Controller
         $this->transaksiService = $transaksiService;
     }
 
-    // public function index(Request $request): JsonResponse
-    // {
-    //     $perPage = $request->get('perPage', 5);
-    //     $transactions = $this->transaksiService->getAllTransactions($perPage);
-
-    //     return response()->json(['status' => 'success', 'data' => $transactions, 'message' => 'Daftar transaksi berhasil diambil.'], Response::HTTP_OK);
-    // }
-
     public function index(Request $request): JsonResponse
     {
-        $perPage = $request->get('perPage', 5);
+        $perPage = $request->get('perPage', 20);
         $transactions = $this->transaksiService->getAllTransactions($perPage);
 
         return response()->json([

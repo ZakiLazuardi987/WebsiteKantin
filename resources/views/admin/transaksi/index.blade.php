@@ -1,4 +1,4 @@
-<div class="container-fluid pt-2">
+<div class="container-fluid pt-2"> 
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -71,7 +71,6 @@
             console.error("Error saat mengambil data:", error);
         }
     }
-
 
     function populateTable(transaksi) {
         const transaksiTableBody = document.getElementById("transaksiTableBody");

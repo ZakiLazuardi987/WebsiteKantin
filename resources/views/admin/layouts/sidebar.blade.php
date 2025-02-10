@@ -3,7 +3,7 @@
     <a href="/admin/dashboard" 
         class="brand-link d-flex justify-content-center align-items-center py-3"
         style="color: #333; background-color: white; transition: background-color 0.2s, color 0.2s;"
-        onmouseover="this.style.color='#007bff';"
+        onmouseover="this.style.color='white'; this.style.backgroundColor='#007bff';"
         onmouseout="this.style.color='#333'; this.style.backgroundColor='white';">
         <img src="{{ asset('assets/img/logo-color.png') }}" class="mr-2" style="width: 30px; height: 30px;"/>
         <span class="brand-text font-weight-medium">Website Kantin</span>
@@ -16,7 +16,9 @@
             <ul class="nav nav-pills nav-sidebar flex-column"  data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item">
-                    <a href="/admin/dashboard" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">
+                    <a href="/admin/dashboard" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}"
+                       onmouseover="this.style.color='white'; this.style.backgroundColor='#007bff';"
+                       onmouseout="this.style.color=''; this.style.backgroundColor='';">
                         <i class="nav-icon fas fa-store"></i>
                         <p>
                             Dashboard
@@ -24,7 +26,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/transaksi" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/transaksi*') ? 'active' : '' }}">
+                    <a href="/admin/transaksi" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/transaksi*') ? 'active' : '' }}"
+                       onmouseover="this.style.color='white'; this.style.backgroundColor='#007bff';"
+                       onmouseout="this.style.color=''; this.style.backgroundColor='';">
                         <i class="nav-icon fas fa-credit-card"></i>
                         <p>
                             Transaksi
@@ -32,7 +36,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/produk" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/produk*') ? 'active' : '' }}">
+                    <a href="/admin/produk" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/produk*') ? 'active' : '' }}"
+                       onmouseover="this.style.color='white'; this.style.backgroundColor='#007bff';"
+                       onmouseout="this.style.color=''; this.style.backgroundColor='';">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Produk
@@ -40,7 +46,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/kategori" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/kategori*') ? 'active' : '' }}">
+                    <a href="/admin/kategori" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/kategori*') ? 'active' : '' }}"
+                       onmouseover="this.style.color='white'; this.style.backgroundColor='#007bff';"
+                       onmouseout="this.style.color=''; this.style.backgroundColor='';">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             Kategori
@@ -48,7 +56,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/user" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/user*') ? 'active' : '' }}">
+                    <a href="/admin/user" style="transition: background-color 0.3s, color 0.3s;" class="nav-link {{ Request::is('admin/user*') ? 'active' : '' }}"
+                       onmouseover="this.style.color='white'; this.style.backgroundColor='#007bff';"
+                       onmouseout="this.style.color=''; this.style.backgroundColor='';">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             User
