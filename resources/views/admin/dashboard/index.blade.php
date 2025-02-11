@@ -69,7 +69,7 @@
                         <i class="fas fa-box fa-lg"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted mb-1">Jumlah Produk</h6>
+                        <h6 class="text-bold text-muted mb-1">Jumlah Produk</h6>
                         <p class="stats-number text-primary" id="jumlahProduk">0</p>
                     </div>
                 </div>

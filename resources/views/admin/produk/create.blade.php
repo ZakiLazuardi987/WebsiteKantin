@@ -54,6 +54,13 @@
             let formData = new FormData(this);
             let token = localStorage.getItem("token");
 
+            // Check if the gambar field is empty
+            if (!formData.get('gambar').name) {
+                // Append the default image to the formData
+                let defaultImage = await fetch('/assets/img/default.jpg').then(res => res.blob());
+                formData.append('gambar', defaultImage, 'default.jpg');
+            }
+
             try {
                 let response = await fetch("http://127.0.0.1:8000/api/produk", {
                     method: "POST",
@@ -69,6 +76,8 @@
                     Swal.fire("Sukses!", "Produk berhasil ditambahkan!", "success").then(() => {
                         window.location.href = "/admin/produk";
                     });
+                } else if (result.message && result.message.includes("Nama produk sudah digunakan")) {
+                    Swal.fire("Gagal!", "Nama produk sudah digunakan, silakan gunakan nama lain.", "error");
                 } else {
                     Swal.fire("Gagal!", result.message || "Gagal menambahkan produk", "error");
                 }

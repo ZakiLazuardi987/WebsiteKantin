@@ -45,6 +45,31 @@
     </div>
 </div>
 <script>
+    function populateTable(users) {
+        const userTableBody = document.getElementById("userTableBody");
+        userTableBody.innerHTML = "";
+
+        users.forEach((user, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <div class="d-flex">
+                            <a href="/admin/user/${user.id}/edit" class="btn btn-sm btn-info">
+                                <i class="fa fa-edit mr-1"></i>Edit
+                            </a>
+                            <button class="btn btn-sm btn-danger ml-1" onclick="deleteUser(${user.id})">
+                                <i class="fa fa-trash mr-1"></i>Hapus
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            userTableBody.innerHTML += row;
+        });
+    }
+
     let usersData = [];
 
     async function fetchUsers() {
@@ -70,31 +95,6 @@
         } catch (error) {
             console.error("Error saat mengambil data:", error);
         }
-    }
-
-    function populateTable(users) {
-        const userTableBody = document.getElementById("userTableBody");
-        userTableBody.innerHTML = "";
-
-        users.forEach((user, index) => {
-            const row = `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                    <td>
-                        <div class="d-flex">
-                            <a href="/admin/user/${user.id}/edit" class="btn btn-sm btn-info">
-                                <i class="fa fa-edit mr-1"></i>Edit
-                            </a>
-                            <button class="btn btn-sm btn-danger ml-1" onclick="deleteUser(${user.id})">
-                                <i class="fa fa-trash mr-1"></i>Hapus
-                            </button>
-                        </div>
-                    </td>
-                </tr>`;
-            userTableBody.innerHTML += row;
-        });
     }
 
     function filterUsers() {

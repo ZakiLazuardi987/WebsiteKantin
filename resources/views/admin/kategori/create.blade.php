@@ -46,6 +46,8 @@
                     Swal.fire("Sukses!", "Kategori berhasil ditambahkan!", "success").then(() => {
                         window.location.href = "/admin/kategori";
                     });
+                } else if (result.message === "Nama kategori telah digunakan") {
+                    Swal.fire("Gagal!", "Nama kategori telah digunakan", "error");
                 } else {
                     Swal.fire("Gagal!", result.message || "Gagal menambahkan kategori", "error");
                 }

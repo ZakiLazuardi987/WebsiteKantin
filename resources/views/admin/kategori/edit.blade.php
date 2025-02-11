@@ -72,7 +72,7 @@
             title: 'Konfirmasi Simpan',
             text: 'Apakah Anda yakin ingin mengubah kategori ini?',
             icon: 'warning',
-            showCancelButton: true,
+        showCancelButton: true,
             confirmButtonText: 'Ya, Simpan!',
             cancelButtonText: 'Batal',
             confirmButtonColor: '#3085d6',
@@ -93,6 +93,8 @@
                         Swal.fire("Sukses!", "Kategori berhasil diperbarui!", "success").then(() => {
                             window.location.href = "/admin/kategori";
                         });
+                    } else if (result.message && result.message.includes("Nama kategori telah digunakan")) {
+                        Swal.fire("Gagal!", "Nama kategori telah digunakan, silakan gunakan nama lain.", "error");
                     } else {
                         Swal.fire("Gagal!", result.message || "Gagal memperbarui kategori", "error");
                     }

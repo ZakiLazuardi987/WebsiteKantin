@@ -24,11 +24,12 @@
                     </div>
 
                     <table class="table pt-2">
-                        <thead>
+                        <thead class="">
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal Transaksi</th>
                                 <th>Status</th>
+                                <th>Total Harga</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -82,6 +83,7 @@
                     <td>${index + 1}</td>
                     <td>${item.created_at}</td>
                     <td>${item.status}</td>
+                    <td>${item.total}</td>
                     <td>
                         <div class="d-flex">
                             <a href="/admin/transaksi/${item.id}/edit" class="btn btn-sm btn-info">
