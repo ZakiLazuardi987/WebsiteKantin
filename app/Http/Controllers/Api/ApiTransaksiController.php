@@ -20,7 +20,7 @@ class ApiTransaksiController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $perPage = $request->get('perPage', 20);
+        $perPage = $request->get('perPage', 25);
         $transactions = $this->transaksiService->getAllTransactions($perPage);
 
         return response()->json([

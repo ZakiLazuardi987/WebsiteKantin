@@ -29,16 +29,18 @@ class DashboardController extends Controller
         // Mengambil data untuk API
         $jumlahProduk = Produk::count();
         $jumlahUser = User::count();
-        $jumlahTransaksi = Transaksi::count();
-        $jumlahPendapatan = Transaksi::sum('total');
-        $pendapatanPerHari = Transaksi::selectRaw('DATE(created_at) as tanggal, SUM(total) as pendapatan')
+        $jumlahTransaksi = Transaksi::where('status', 'Selesai')->count();
+        $jumlahPendapatan = Transaksi::where('status', 'Selesai')->sum('total');
+        $pendapatanPerHari = Transaksi::where('status', 'Selesai')
+            ->selectRaw('DATE(created_at) as tanggal, SUM(total) as pendapatan')
             ->groupBy('tanggal')
             ->orderBy('tanggal', 'asc')
             ->pluck('pendapatan', 'tanggal')
             ->toArray();
 
         // Ambil produk terlaris berdasarkan jumlah yang dibeli dalam transaksi
-        $produkTerlaris = Transaksi::join('detail_transaksis', 'transaksis.id', '=', 'detail_transaksis.transaksi_id')
+        $produkTerlaris = Transaksi::where('status', 'Selesai')
+            ->join('detail_transaksis', 'transaksis.id', '=', 'detail_transaksis.transaksi_id')
             ->join('produks', 'detail_transaksis.produk_id', '=', 'produks.id')
             ->selectRaw('produks.name, SUM(detail_transaksis.qty) as total_terjual')
             ->groupBy('produks.name')

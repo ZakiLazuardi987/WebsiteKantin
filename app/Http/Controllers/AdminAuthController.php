@@ -121,10 +121,24 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
+use App\Services\AuthService;
+
 class AdminAuthController extends Controller
 {
+    protected AuthService $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     public function index()
     {
         return view('admin.auth.login');
+    }
+    public function logout()
+    {
+        $this->authService->logout();
+        return redirect('/');
     }
 }

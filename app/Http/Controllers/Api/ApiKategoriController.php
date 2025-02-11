@@ -34,18 +34,55 @@ class ApiKategoriController extends Controller
     // Menyimpan kategori baru
     public function store(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'name' => 'required|unique:kategoris'
-        ]);
+        try {
+            $data = $request->validate([
+                'name' => 'required|unique:kategoris'
+            ]);
 
-        $kategori = $this->kategoriService->createCategory($data);
+            $kategori = $this->kategoriService->createCategory($data);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Kategori berhasil ditambahkan',
-            'data' => $kategori
-        ], 201);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Kategori berhasil ditambahkan',
+                'data' => $kategori
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Nama kategori telah digunakan'
+            ], 422);
+        }
     }
+
+    public function update(Request $request, string $id): JsonResponse
+    {
+        try {
+            $data = $request->validate([
+                'name' => 'required|unique:kategoris,name,' . $id
+            ]);
+
+            $updated = $this->kategoriService->updateCategory($id, $data);
+
+            if (!$updated) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Kategori gagal diperbarui'
+                ], 400);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Kategori berhasil diperbarui',
+                'data' => $updated
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Nama kategori telah digunakan'
+            ], 422);
+        }
+    }
+
 
     // Menampilkan kategori berdasarkan ID
     public function show(string $id): JsonResponse
@@ -63,29 +100,6 @@ class ApiKategoriController extends Controller
             'status' => 'success',
             'message' => 'Data kategori ditemukan',
             'data' => $kategori
-        ], 200);
-    }
-
-    // Mengupdate kategori berdasarkan ID
-    public function update(Request $request, string $id): JsonResponse
-    {
-        $data = $request->validate([
-            'name' => 'required|unique:kategoris,name,' . $id
-        ]);
-
-        $updated = $this->kategoriService->updateCategory($id, $data);
-
-        if (!$updated) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Kategori gagal diperbarui'
-            ], 400);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Kategori berhasil diperbarui',
-            'data' => $updated
         ], 200);
     }
 

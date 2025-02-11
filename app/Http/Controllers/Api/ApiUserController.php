@@ -47,10 +47,25 @@ class ApiUserController extends Controller
                 'data' => $user
             ], 201);
         } catch (ValidationException $e) {
+            $errors = $e->errors();
+            if (isset($errors['email'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Email telah digunakan oleh user lain',
+                    'errors' => $errors
+                ], 422);
+            }
+            if (isset($errors['password'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Password tidak memenuhi minimal 6 karakter',
+                    'errors' => $errors
+                ], 422);
+            }
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validasi gagal',
-                'errors' => $e->errors()
+                'errors' => $errors
             ], 422);
         }
     }
@@ -99,10 +114,25 @@ class ApiUserController extends Controller
                 'message' => 'Data user berhasil diperbarui'
             ], 200);
         } catch (ValidationException $e) {
+            $errors = $e->errors();
+            if (isset($errors['email'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Email telah digunakan oleh user lain',
+                    'errors' => $errors
+                ], 422);
+            }
+            if (isset($errors['password'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Password tidak memenuhi minimal 6 karakter',
+                    'errors' => $errors
+                ], 422);
+            }
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validasi gagal',
-                'errors' => $e->errors()
+                'errors' => $errors
             ], 422);
         }
     }
