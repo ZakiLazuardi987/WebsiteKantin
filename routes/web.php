@@ -26,10 +26,10 @@ Route::get('/', function () {
 });
 Route::get('/login', [AdminAuthController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login/do', [ApiAuthController::class, 'login']);
-Route::get('/logout', [ApiAuthController::class, 'logout'])->middleware('auth');
+Route::get('/logout', [AdminAuthController::class, 'logout'])->middleware('auth');
 // Route::get('/teslogin', [TesLogin::class, 'index']);
 
-Route::prefix('/admin')->group(function () {
+Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/transaksi/detail/done/{id}', [AdminDetailTransaksiController::class, 'done']);
